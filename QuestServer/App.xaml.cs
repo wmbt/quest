@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
+using System.ServiceModel;
 using System.Windows;
 using Common;
 using QuestServer.NetworkService;
@@ -19,9 +16,21 @@ namespace QuestServer
         public Provider Provider;
         public RoomCollection Rooms;
         public Clients Clients;
+        public ServiceHost ServiceHost;
+        
         public App()
         {
-            this.Startup += OnStartup;
+            Startup += OnStartup;
+            Exit += OnExit;
+        }
+
+        private void OnExit(object sender, ExitEventArgs exitEventArgs)
+        {
+            if (ServiceHost == null) 
+                return;
+            
+            ServiceHost.Close();
+            ServiceHost = null;
         }
 
         private void OnStartup(object sender, StartupEventArgs startupEventArgs)
@@ -30,6 +39,8 @@ namespace QuestServer
             Clients = new Clients();
 
             InitRooms();
+            ServiceHost = new ServiceHost(typeof (NetworkService.QuestService));
+            ServiceHost.Open();
         }
 
         private void InitRooms()

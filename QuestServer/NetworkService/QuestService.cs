@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 using System.Windows;
 using Common;
 using QuestServer.Storage;
 using QuestService;
 
-namespace QuestServer
+namespace QuestServer.NetworkService
 {
     // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени класса "QuestService" в коде и файле конфигурации.
     public class QuestService : IQuestService
@@ -20,7 +17,7 @@ namespace QuestServer
 
         public QuestService()
         {
-            _app = ((App)Application.Current);
+            _app = ((App) Application.Current);
             _provider = _app.Provider;
         }
 
@@ -33,11 +30,25 @@ namespace QuestServer
 
         public void RegisterQuestClient( int questId)
         {
+            var context = OperationContext.Current;
             var clients = _app.Clients;
-            var callback = OperationContext.Current.GetCallbackChannel<IQuestServiceCallback>();
-            clients.RegisterClient(questId, callback);
+            
+            clients.RegisterClient(questId, context);
+
+            context.Channel.Closed += ChannelOnClosed;
+            context.Channel.Faulted += ChannelOnFaulted;
         }
 
-        
+        private void ChannelOnFaulted(object sender, EventArgs eventArgs)
+        {
+            var channel = (IContextChannel) sender;
+            _app.Clients.UnregisterClient(channel.SessionId);
+        }
+
+        private void ChannelOnClosed(object sender, EventArgs eventArgs)
+        {
+            var channel = (IContextChannel)sender;
+            _app.Clients.UnregisterClient(channel.SessionId);   
+        }
     }
 }
