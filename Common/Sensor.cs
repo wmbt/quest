@@ -6,7 +6,7 @@ namespace Common
 {
     public class Sensor
     {
-        internal Room Room;
+        public Room Room { get; internal set; }
         public int Id { get; private set; }
         public bool Triggered { get; private set; }
         public bool Active { get; private set; }

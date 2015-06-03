@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Common;
+using QuestServer.NetworkService;
 using QuestServer.Storage;
 
 namespace QuestServer
@@ -17,6 +18,7 @@ namespace QuestServer
     {
         public Provider Provider;
         public RoomCollection Rooms;
+        public Clients Clients;
         public App()
         {
             this.Startup += OnStartup;
@@ -24,21 +26,23 @@ namespace QuestServer
 
         private void OnStartup(object sender, StartupEventArgs startupEventArgs)
         {
-             Provider = new Provider();
+            Provider = new Provider();
+            Clients = new Clients();
+
             InitRooms();
         }
 
         private void InitRooms()
         {
             Rooms = new RoomCollection();
-            var roomsCount = int.Parse(ConfigurationManager.AppSettings["RoomsCount"]);
-            for (var i = 0; i < roomsCount; i++)
-            {
-                var roomsSensors = ConfigurationManager.AppSettings["Room" + i + "Sensor"];
-                var sensorsIds = roomsSensors.Split(',').Select(int.Parse);
-                var room = new Room(sensorsIds);
+
+            var quests = Provider.GetAllQuests();
+            
+            foreach (var room in 
+                from quest in quests 
+                    let sensorsIds = Provider.GetSensorsIds(quest.Id) 
+                    select new Room(quest.Id, sensorsIds))
                 Rooms.Add(room);
-            }
         }
     }
 }

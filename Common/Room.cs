@@ -7,7 +7,7 @@ namespace Common
     public class Room
     {
         internal RoomCollection RoomCollection;
-        internal int Id;
+        public int Id { get; internal set; }
         public SensorsCollection Sensors { get; private set; }
         public bool AllowListening { get; set; }
         public event SensorTriggeredHandler SensorTriggered;
@@ -21,7 +21,7 @@ namespace Common
             {
                 s.SensorTriggered += OnSensorTriggered;
                 Sensors.Add(s);
-
+                s.Room = this;
             }
         }
         private void OnSensorTriggered(object sender, SensorTriggeredArgs args)

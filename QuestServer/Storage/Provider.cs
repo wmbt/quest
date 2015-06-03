@@ -35,5 +35,23 @@ namespace QuestServer.Storage
             
             return keys;
         }
+
+        public IEnumerable<int> GetSensorsIds(int questId)
+        {
+            var ids = _dataSet.Quests.FindById(questId)
+                .GetKeysRows().Select(x => x.SensorId);
+            return ids;
+        }
+
+        public IEnumerable<Quest> GetAllQuests()
+        {
+            var quests = _dataSet.Quests.AsEnumerable()
+                .Select(x => new Quest
+                                    {
+                                        Id = x.Id,
+                                        Description = x.Desccription
+                                    });
+            return quests;
+        }
     }
 }

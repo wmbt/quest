@@ -31,11 +31,11 @@ namespace QuestServer
             return keys;
         }
 
-        public void RegisterQuestClient(int roomId, int questId)
+        public void RegisterQuestClient( int questId)
         {
-            var room = _app.Rooms.GetById(roomId);
-            room.ResetSensors();
-            room.SensorTriggered
+            var clients = _app.Clients;
+            var callback = OperationContext.Current.GetCallbackChannel<IQuestServiceCallback>();
+            clients.RegisterClient(questId, callback);
         }
 
         

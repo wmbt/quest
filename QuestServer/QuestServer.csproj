@@ -72,13 +72,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NetworkService\QuestClient.cs" />
     <Compile Include="Storage\Provider.cs" />
+    <Compile Include="Storage\QuestDbDataSet.cs">
+      <DependentUpon>QuestDbDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Storage\QuestDbDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>QuestDbDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="QuestService.cs" />
+    <Compile Include="NetworkService\QuestService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

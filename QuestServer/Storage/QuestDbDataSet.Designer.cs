@@ -598,6 +598,8 @@ namespace QuestServer.Storage {
             
             private global::System.Data.DataColumn columnQuestId;
             
+            private global::System.Data.DataColumn columnSensorId;
+            
             private global::System.Data.DataColumn columnDescription;
             
             private global::System.Data.DataColumn columnImage;
@@ -650,6 +652,14 @@ namespace QuestServer.Storage {
             public global::System.Data.DataColumn QuestIdColumn {
                 get {
                     return this.columnQuestId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn SensorIdColumn {
+                get {
+                    return this.columnSensorId;
                 }
             }
             
@@ -714,11 +724,12 @@ namespace QuestServer.Storage {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public KeysRow AddKeysRow(int Id, QuestsRow parentQuestsRowByFK_Keys_ToQuests, string Description, byte[] Image, System.TimeSpan TimeOffset) {
+            public KeysRow AddKeysRow(int Id, QuestsRow parentQuestsRowByFK_Keys_ToQuests, int SensorId, string Description, byte[] Image, System.TimeSpan TimeOffset) {
                 KeysRow rowKeysRow = ((KeysRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Id,
                         null,
+                        SensorId,
                         Description,
                         Image,
                         TimeOffset};
@@ -756,6 +767,7 @@ namespace QuestServer.Storage {
             internal void InitVars() {
                 this.columnId = base.Columns["Id"];
                 this.columnQuestId = base.Columns["QuestId"];
+                this.columnSensorId = base.Columns["SensorId"];
                 this.columnDescription = base.Columns["Description"];
                 this.columnImage = base.Columns["Image"];
                 this.columnTimeOffset = base.Columns["TimeOffset"];
@@ -768,6 +780,8 @@ namespace QuestServer.Storage {
                 base.Columns.Add(this.columnId);
                 this.columnQuestId = new global::System.Data.DataColumn("QuestId", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuestId);
+                this.columnSensorId = new global::System.Data.DataColumn("SensorId", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSensorId);
                 this.columnDescription = new global::System.Data.DataColumn("Description", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDescription);
                 this.columnImage = new global::System.Data.DataColumn("Image", typeof(byte[]), null, global::System.Data.MappingType.Element);
@@ -779,6 +793,7 @@ namespace QuestServer.Storage {
                 this.columnId.AllowDBNull = false;
                 this.columnId.Unique = true;
                 this.columnQuestId.AllowDBNull = false;
+                this.columnSensorId.AllowDBNull = false;
                 this.columnDescription.MaxLength = 2147483647;
             }
             
@@ -1004,6 +1019,17 @@ namespace QuestServer.Storage {
                 }
                 set {
                     this[this.tableKeys.QuestIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int SensorId {
+                get {
+                    return ((int)(this[this.tableKeys.SensorIdColumn]));
+                }
+                set {
+                    this[this.tableKeys.SensorIdColumn] = value;
                 }
             }
             
@@ -1624,6 +1650,7 @@ SELECT Id, Desccription FROM Quests WHERE (Id = @Id)";
             tableMapping.DataSetTable = "Keys";
             tableMapping.ColumnMappings.Add("Id", "Id");
             tableMapping.ColumnMappings.Add("QuestId", "QuestId");
+            tableMapping.ColumnMappings.Add("SensorId", "SensorId");
             tableMapping.ColumnMappings.Add("Description", "Description");
             tableMapping.ColumnMappings.Add("Image", "Image");
             tableMapping.ColumnMappings.Add("TimeOffset", "TimeOffset");
@@ -1631,36 +1658,41 @@ SELECT Id, Desccription FROM Quests WHERE (Id = @Id)";
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
             this._adapter.DeleteCommand.CommandText = "DELETE FROM [dbo].[Keys] WHERE (([Id] = @Original_Id) AND ([QuestId] = @Original_" +
-                "QuestId) AND ((@IsNull_TimeOffset = 1 AND [TimeOffset] IS NULL) OR ([TimeOffset]" +
-                " = @Original_TimeOffset)))";
+                "QuestId) AND ([SensorId] = @Original_SensorId) AND ((@IsNull_TimeOffset = 1 AND " +
+                "[TimeOffset] IS NULL) OR ([TimeOffset] = @Original_TimeOffset)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_QuestId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QuestId", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SensorId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SensorId", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_TimeOffset", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeOffset", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TimeOffset", global::System.Data.SqlDbType.Time, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeOffset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Keys] ([Id], [QuestId], [Description], [Image], [TimeOffset]) " +
-                "VALUES (@Id, @QuestId, @Description, @Image, @TimeOffset);\r\nSELECT Id, QuestId, " +
-                "Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [dbo].[Keys] ([Id], [QuestId], [SensorId], [Description], [Image], [T" +
+                "imeOffset]) VALUES (@Id, @QuestId, @SensorId, @Description, @Image, @TimeOffset)" +
+                ";\r\nSELECT Id, QuestId, SensorId, Description, Image, TimeOffset FROM Keys WHERE " +
+                "(Id = @Id)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@QuestId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QuestId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SensorId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SensorId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Description", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Description", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Image", global::System.Data.SqlDbType.VarBinary, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Image", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TimeOffset", global::System.Data.SqlDbType.Time, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeOffset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Keys] SET [Id] = @Id, [QuestId] = @QuestId, [Description] = @Description, [Image] = @Image, [TimeOffset] = @TimeOffset WHERE (([Id] = @Original_Id) AND ([QuestId] = @Original_QuestId) AND ((@IsNull_TimeOffset = 1 AND [TimeOffset] IS NULL) OR ([TimeOffset] = @Original_TimeOffset)));
-SELECT Id, QuestId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Keys] SET [Id] = @Id, [QuestId] = @QuestId, [SensorId] = @SensorId, [Description] = @Description, [Image] = @Image, [TimeOffset] = @TimeOffset WHERE (([Id] = @Original_Id) AND ([QuestId] = @Original_QuestId) AND ([SensorId] = @Original_SensorId) AND ((@IsNull_TimeOffset = 1 AND [TimeOffset] IS NULL) OR ([TimeOffset] = @Original_TimeOffset)));
+SELECT Id, QuestId, SensorId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@QuestId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QuestId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@SensorId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SensorId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Description", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Description", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Image", global::System.Data.SqlDbType.VarBinary, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Image", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TimeOffset", global::System.Data.SqlDbType.Time, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeOffset", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_QuestId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "QuestId", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_SensorId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "SensorId", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_TimeOffset", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeOffset", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_TimeOffset", global::System.Data.SqlDbType.Time, 0, global::System.Data.ParameterDirection.Input, 0, 0, "TimeOffset", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
@@ -1675,17 +1707,11 @@ SELECT Id, QuestId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitCommandCollection() {
-            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[2];
+            this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Id, QuestId, Description, Image, TimeOffset FROM dbo.Keys";
+            this._commandCollection[0].CommandText = "SELECT Id, QuestId, SensorId, Description, Image, TimeOffset FROM dbo.Keys";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1] = new global::System.Data.SqlClient.SqlCommand();
-            this._commandCollection[1].Connection = this.Connection;
-            this._commandCollection[1].CommandText = "SELECT        Id, QuestId, Description, Image, TimeOffset\r\nFROM            Keys\r\n" +
-                "WHERE        (QuestId = @QuestId)";
-            this._commandCollection[1].CommandType = global::System.Data.CommandType.Text;
-            this._commandCollection[1].Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@QuestId", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "QuestId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1710,20 +1736,6 @@ SELECT Id, QuestId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
             QuestDbDataSet.KeysDataTable dataTable = new QuestDbDataSet.KeysDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, false)]
-        public virtual int FillByQuestId(QuestDbDataSet.KeysDataTable dataTable, int QuestId) {
-            this.Adapter.SelectCommand = this.CommandCollection[1];
-            this.Adapter.SelectCommand.Parameters[0].Value = ((int)(QuestId));
-            if ((this.ClearBeforeFill == true)) {
-                dataTable.Clear();
-            }
-            int returnValue = this.Adapter.Fill(dataTable);
-            return returnValue;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1759,16 +1771,17 @@ SELECT Id, QuestId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_Id, int Original_QuestId, global::System.Nullable<global::System.TimeSpan> Original_TimeOffset) {
+        public virtual int Delete(int Original_Id, int Original_QuestId, int Original_SensorId, global::System.Nullable<global::System.TimeSpan> Original_TimeOffset) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Id));
             this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_QuestId));
+            this.Adapter.DeleteCommand.Parameters[2].Value = ((int)(Original_SensorId));
             if ((Original_TimeOffset.HasValue == true)) {
-                this.Adapter.DeleteCommand.Parameters[2].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[3].Value = ((System.TimeSpan)(Original_TimeOffset.Value));
+                this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[4].Value = ((System.TimeSpan)(Original_TimeOffset.Value));
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[2].Value = ((object)(1));
-                this.Adapter.DeleteCommand.Parameters[3].Value = global::System.DBNull.Value;
+                this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1790,26 +1803,27 @@ SELECT Id, QuestId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(int Id, int QuestId, string Description, byte[] Image, global::System.Nullable<global::System.TimeSpan> TimeOffset) {
+        public virtual int Insert(int Id, int QuestId, int SensorId, string Description, byte[] Image, global::System.Nullable<global::System.TimeSpan> TimeOffset) {
             this.Adapter.InsertCommand.Parameters[0].Value = ((int)(Id));
             this.Adapter.InsertCommand.Parameters[1].Value = ((int)(QuestId));
+            this.Adapter.InsertCommand.Parameters[2].Value = ((int)(SensorId));
             if ((Description == null)) {
-                this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(Description));
-            }
-            if ((Image == null)) {
                 this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((byte[])(Image));
+                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(Description));
             }
-            if ((TimeOffset.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((System.TimeSpan)(TimeOffset.Value));
+            if ((Image == null)) {
+                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
+                this.Adapter.InsertCommand.Parameters[4].Value = ((byte[])(Image));
+            }
+            if ((TimeOffset.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[5].Value = ((System.TimeSpan)(TimeOffset.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[5].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1831,36 +1845,38 @@ SELECT Id, QuestId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int Id, int QuestId, string Description, byte[] Image, global::System.Nullable<global::System.TimeSpan> TimeOffset, int Original_Id, int Original_QuestId, global::System.Nullable<global::System.TimeSpan> Original_TimeOffset) {
+        public virtual int Update(int Id, int QuestId, int SensorId, string Description, byte[] Image, global::System.Nullable<global::System.TimeSpan> TimeOffset, int Original_Id, int Original_QuestId, int Original_SensorId, global::System.Nullable<global::System.TimeSpan> Original_TimeOffset) {
             this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(Id));
             this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(QuestId));
+            this.Adapter.UpdateCommand.Parameters[2].Value = ((int)(SensorId));
             if ((Description == null)) {
-                this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Description));
-            }
-            if ((Image == null)) {
                 this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[3].Value = ((byte[])(Image));
+                this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(Description));
             }
-            if ((TimeOffset.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((System.TimeSpan)(TimeOffset.Value));
-            }
-            else {
+            if ((Image == null)) {
                 this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(Original_Id));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_QuestId));
-            if ((Original_TimeOffset.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((System.TimeSpan)(Original_TimeOffset.Value));
+            else {
+                this.Adapter.UpdateCommand.Parameters[4].Value = ((byte[])(Image));
+            }
+            if ((TimeOffset.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[5].Value = ((System.TimeSpan)(TimeOffset.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[5].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(Original_Id));
+            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_QuestId));
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_SensorId));
+            if ((Original_TimeOffset.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((System.TimeSpan)(Original_TimeOffset.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1882,8 +1898,8 @@ SELECT Id, QuestId, Description, Image, TimeOffset FROM Keys WHERE (Id = @Id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(int QuestId, string Description, byte[] Image, global::System.Nullable<global::System.TimeSpan> TimeOffset, int Original_Id, int Original_QuestId, global::System.Nullable<global::System.TimeSpan> Original_TimeOffset) {
-            return this.Update(Original_Id, QuestId, Description, Image, TimeOffset, Original_Id, Original_QuestId, Original_TimeOffset);
+        public virtual int Update(int QuestId, int SensorId, string Description, byte[] Image, global::System.Nullable<global::System.TimeSpan> TimeOffset, int Original_Id, int Original_QuestId, int Original_SensorId, global::System.Nullable<global::System.TimeSpan> Original_TimeOffset) {
+            return this.Update(Original_Id, QuestId, SensorId, Description, Image, TimeOffset, Original_Id, Original_QuestId, Original_SensorId, Original_TimeOffset);
         }
     }
     

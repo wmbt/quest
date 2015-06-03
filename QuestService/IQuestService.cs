@@ -16,22 +16,7 @@ namespace QuestService
         IEnumerable<Key> GetQuestKeys(int questId);
 
         [OperationContract(IsOneWay = true)]
-        void RegisterQuestClient(int roomId, int questId);
+        void RegisterQuestClient(int questId);
 
-    }
-
-    public interface IQuestServiceCallback
-    {
-        [OperationContract(IsOneWay = true)]
-        void SensorTriggered();
-
-        [OperationContract(IsOneWay = true)]
-        void StartQuest();
-
-        [OperationContract(IsOneWay = true)]
-        void StopQuest();
-
-        [OperationContract]
-        QuestState GetQuestState();
     }
 }
