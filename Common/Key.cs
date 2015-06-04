@@ -13,6 +13,7 @@ namespace Common
         public TimeSpan TimeOffset { get; set; }
         public string Description { get; set; }
         public byte[] Image { get; set; }
+        public int SensorId { get; set; }
     }
 
     

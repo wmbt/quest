@@ -9,6 +9,7 @@ using QuestService;
 namespace QuestServer.NetworkService
 {
     // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени класса "QuestService" в коде и файле конфигурации.
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class QuestService : IQuestService
     {
         private readonly App _app;

@@ -7,7 +7,7 @@
     <ProjectGuid>{EEF2D248-A385-4CA9-BA96-90291915753F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Quests</RootNamespace>
+    <RootNamespace>QuestClient</RootNamespace>
     <AssemblyName>Quests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -38,7 +38,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,6 +59,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Stage.cs" />
+    <Compile Include="NetworkService\QuestServiceCallback.cs" />
+    <Compile Include="Service References\NetworkService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -87,11 +97,22 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Common.Key.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\NetworkService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NetworkService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NetworkService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NetworkService\QuestService.wsdl" />
     <Resource Include="Fonts\webhostinghub-glyphs.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +127,27 @@
       <Project>{2a430a11-4587-46d7-b1ca-3e5ec4a5809d}</Project>
       <Name>QuestService</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\NetworkService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\item.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
