@@ -5,7 +5,7 @@ using System.Linq;
 using System.Timers;
 using Common;
 
-namespace Quests
+namespace QuestClient
 {
     public class Stage
     {

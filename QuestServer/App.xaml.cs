@@ -55,5 +55,10 @@ namespace QuestServer
                     select new Room(quest.Id, sensorsIds))
                 Rooms.Add(room);
         }
+
+        public static App GetApp()
+        {
+            return (App)Application.Current;
+        }
     }
 }

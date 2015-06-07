@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.ServiceModel;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using Quests.NetworkService;
+using QuestClient.NetworkService;
+using Quests;
 
-namespace Quests
+namespace QuestClient
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml
@@ -23,6 +19,19 @@ namespace Quests
         public App()
         {
             Startup += OnStartup;
+            Exit += OnExit;
+            
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+        }
+
+        private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            QuestServiceClient.Close();
+        }
+
+        private void OnExit(object sender, ExitEventArgs exitEventArgs)
+        {
+            QuestServiceClient.Close();
         }
 
         private void OnStartup(object sender, StartupEventArgs startupEventArgs)
@@ -32,8 +41,8 @@ namespace Quests
             QuestServiceClient = new QuestServiceClient(instanceContext);
             QuestServiceClient.RegisterQuestClient(QuestId);
 
-            var keys = QuestServiceClient.GetQuestKeys(QuestId);
-            QusetStages = new Stages(keys);
+            /*var keys = QuestServiceClient.GetQuestKeys(QuestId);
+            QusetStages = new Stages(keys);*/
 
             
         }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
 using System.Windows;
@@ -45,15 +44,15 @@ namespace QuestServer.NetworkService
         }
     }
 
-    public class Clients : IEnumerable<QuestClient>
+    public class Clients : ObservableCollection<QuestClient>
     {
-        private readonly List<QuestClient> _clients = new List<QuestClient>();
         private readonly App _app = ((App)Application.Current);
 
+        
         public void UnregisterClient(string sessionId)
         {
-            var client = _clients.Single(x => x.SessionId == sessionId);
-            _clients.Remove(client);
+            var client = this.Single(x => x.SessionId == sessionId);
+            Remove(client);
         }
 
         public void RegisterClient(int questId, OperationContext operationContext)
@@ -61,19 +60,8 @@ namespace QuestServer.NetworkService
             var questRoom = _app.Rooms.GetById(questId);
             var callback = operationContext.GetCallbackChannel<IQuestServiceCallback>();
 
-            _clients.Add(new QuestClient(callback, questRoom, operationContext.SessionId));
+            Add(new QuestClient(callback, questRoom, operationContext.SessionId));
         }
-
-        public IEnumerator<QuestClient> GetEnumerator()
-        {
-            return _clients.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         
     }
 }

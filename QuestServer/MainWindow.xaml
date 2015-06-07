@@ -1,8 +1,27 @@
-﻿<Window x:Class="QuestServer.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:networkService="clr-namespace:QuestServer.NetworkService" x:Class="QuestServer.MainWindow"
         Title="Сервер квестов" Height="350" Width="525">
     <Grid>
-        
+        <ListBox Margin="0,15,0,0" VerticalAlignment="Top" Height="220" Width="480" HorizontalAlignment="Center"
+                 ItemsSource="{ Binding }" x:Name="Clients">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="4" Width="370">
+                        <Grid Margin="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock FontWeight="Bold"
+								Text="{Binding SessionId }"/>
+                            <TextBlock Grid.Row="1" Text="{Binding }"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
     </Grid>
 </Window>

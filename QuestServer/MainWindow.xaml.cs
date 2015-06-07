@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,10 @@ namespace QuestServer
     {
         public MainWindow()
         {
+            var app = App.GetApp();
+
             InitializeComponent();
+            Clients.ItemsSource = app.Clients;
         }
     }
 }
