@@ -70,7 +70,7 @@ namespace QuestClient
             {
                 OnStageCompleted(new StageCompletedHandlerArgs(completedStage));
                 _currentStage = _stages[completedIndex + 1];
-                _timer.Interval = _currentStage.Key.TimeOffset.Milliseconds;
+                _timer.Interval = _currentStage.Key.TimeOffset.TotalMilliseconds;
                 _timer.Start();
 
             }
@@ -85,7 +85,7 @@ namespace QuestClient
         {
             ResetWatch();
             _currentStage = _stages.First();
-            _timer.Interval = _currentStage.Key.TimeOffset.Milliseconds;
+            _timer.Interval = _currentStage.Key.TimeOffset.TotalMilliseconds;
             _timer.Start();
         }
 
@@ -99,9 +99,7 @@ namespace QuestClient
             _timer.Stop();
             _stages.ForEach(x => { x.TimerFired = x.SensorTriggered = false; });
         }
-
-
-
+        
         protected virtual void OnKeyPublished(KeyPublishedHandlerArgs args)
         {
             var handler = KeyPublished;

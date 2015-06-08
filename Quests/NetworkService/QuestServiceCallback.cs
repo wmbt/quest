@@ -7,26 +7,26 @@ namespace QuestClient.NetworkService
     class QuestServiceCallback : IQuestServiceCallback
     {
         private readonly App _app;
-        private readonly Stages _stages;
+        public Stages Stages;
         public QuestServiceCallback(App app)
         {
             _app = app;
-            _stages = app.QusetStages;
+            Stages = app.QusetStages;
         }
 
         public void SensorTriggered(int sensorId)
         {
-            _stages.SensorTriggered(sensorId);
+            Stages.SensorTriggered(sensorId);
         }
 
         public void StartQuest()
         {
-            _stages.StartWatch();
+            Stages.StartWatch();
         }
 
         public void StopQuest()
         {
-            _stages.StopWatch();
+            Stages.StopWatch();
         }
 
         public QuestState GetQuestState()

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using System.Windows;
-using Common;
-using QuestServer.NetworkService;
+using QuestServer.Models;
 using QuestServer.Storage;
 
 namespace QuestServer
@@ -11,11 +8,10 @@ namespace QuestServer
     /// <summary>
     /// Логика взаимодействия для App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
-        public Provider Provider;
-        public RoomCollection Rooms;
-        public Clients Clients;
+        public Provider Provider { get; private set; }
+        public ClientCollection Clients { get; private set; }
         public ServiceHost ServiceHost;
         
         public App()
@@ -35,30 +31,16 @@ namespace QuestServer
 
         private void OnStartup(object sender, StartupEventArgs startupEventArgs)
         {
+            Clients = new ClientCollection();
             Provider = new Provider();
-            Clients = new Clients();
-
-            InitRooms();
-            ServiceHost = new ServiceHost(typeof (NetworkService.QuestService));
+            var service = new NetworkService.QuestService(Clients);
+            ServiceHost = new ServiceHost(service);
             ServiceHost.Open();
-        }
-
-        private void InitRooms()
-        {
-            Rooms = new RoomCollection();
-
-            var quests = Provider.GetAllQuests();
-            
-            foreach (var room in 
-                from quest in quests 
-                    let sensorsIds = Provider.GetSensorsIds(quest.Id) 
-                    select new Room(quest.Id, sensorsIds))
-                Rooms.Add(room);
         }
 
         public static App GetApp()
         {
-            return (App)Application.Current;
+            return (App) Current;
         }
     }
 }

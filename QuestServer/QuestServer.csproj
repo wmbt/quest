@@ -75,7 +75,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="NetworkService\QuestClient.cs" />
+    <Compile Include="Models\ClientCollection.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Command.cs" />
+    <Compile Include="Models\MainViewModel.cs" />
+    <Compile Include="Models\Quest.cs" />
+    <Compile Include="Models\Sensor.cs" />
     <Compile Include="Storage\Provider.cs" />
     <Compile Include="Storage\QuestDbDataSet.cs">
       <DependentUpon>QuestDbDataSet.xsd</DependentUpon>

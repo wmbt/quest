@@ -15,17 +15,17 @@ namespace QuestClient.NetworkService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="NetworkService.IQuestService", CallbackContract=typeof(QuestClient.NetworkService.IQuestServiceCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IQuestService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/GetQuestKeys", ReplyAction="http://tempuri.org/IQuestService/GetQuestKeysResponse")]
-        Common.Key[] GetQuestKeys(int questId);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/RegisterQuestClient", ReplyAction="http://tempuri.org/IQuestService/RegisterQuestClientResponse")]
+        Common.Key[] RegisterQuestClient(int questId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/GetQuestKeys", ReplyAction="http://tempuri.org/IQuestService/GetQuestKeysResponse")]
-        System.Threading.Tasks.Task<Common.Key[]> GetQuestKeysAsync(int questId);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/RegisterQuestClient", ReplyAction="http://tempuri.org/IQuestService/RegisterQuestClientResponse")]
+        System.Threading.Tasks.Task<Common.Key[]> RegisterQuestClientAsync(int questId);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/RegisterQuestClient")]
-        void RegisterQuestClient(int questId);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/QuestCompleted")]
+        void QuestCompleted(int questId);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/RegisterQuestClient")]
-        System.Threading.Tasks.Task RegisterQuestClientAsync(int questId);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/QuestCompleted")]
+        System.Threading.Tasks.Task QuestCompletedAsync(int questId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -72,20 +72,20 @@ namespace QuestClient.NetworkService {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public Common.Key[] GetQuestKeys(int questId) {
-            return base.Channel.GetQuestKeys(questId);
+        public Common.Key[] RegisterQuestClient(int questId) {
+            return base.Channel.RegisterQuestClient(questId);
         }
         
-        public System.Threading.Tasks.Task<Common.Key[]> GetQuestKeysAsync(int questId) {
-            return base.Channel.GetQuestKeysAsync(questId);
-        }
-        
-        public void RegisterQuestClient(int questId) {
-            base.Channel.RegisterQuestClient(questId);
-        }
-        
-        public System.Threading.Tasks.Task RegisterQuestClientAsync(int questId) {
+        public System.Threading.Tasks.Task<Common.Key[]> RegisterQuestClientAsync(int questId) {
             return base.Channel.RegisterQuestClientAsync(questId);
+        }
+        
+        public void QuestCompleted(int questId) {
+            base.Channel.QuestCompleted(questId);
+        }
+        
+        public System.Threading.Tasks.Task QuestCompletedAsync(int questId) {
+            return base.Channel.QuestCompletedAsync(questId);
         }
     }
 }

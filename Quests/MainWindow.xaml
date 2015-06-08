@@ -3,9 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="QuestServer" Height="350" Width="525" 
         WindowStyle="None" 
-        WindowState="Maximized" 
-        ResizeMode="NoResize" Topmost="True" Background="Black">
-    <Grid HorizontalAlignment="Center" Height="100" Margin="0" VerticalAlignment="Center" Width="100" >
-        <Button  Content="&#xF15B;" FontSize="36pt" Style="{StaticResource Glyphs}" HorizontalAlignment="Left" Margin="10,43,0,0" VerticalAlignment="Top" Width="80" Height="80"/>
+        WindowState="Normal" 
+        ResizeMode="NoResize" Topmost="False" Background="Black">
+    <Grid HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Center" Width="500" >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Center"  Content="Решение" FontSize="24pt" HorizontalAlignment="Center" VerticalAlignment="Top" Width="210"
+                Background="SlateGray" x:Name="ShowKeyButton"/>
+        <Button Grid.Row="0" Grid.Column="1" IsEnabled="False" HorizontalContentAlignment="Center"  Content="Вызов" FontSize="24pt" HorizontalAlignment="Center" VerticalAlignment="Top" Width="210"
+                Background="SlateGray"/>
     </Grid>
 </Window>

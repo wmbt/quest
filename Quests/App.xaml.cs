@@ -36,15 +36,13 @@ namespace QuestClient
 
         private void OnStartup(object sender, StartupEventArgs startupEventArgs)
         {
-            var instanceContext = new InstanceContext(new QuestServiceCallback(this));
+            var callback = new QuestServiceCallback(this);
+            var instanceContext = new InstanceContext(callback);
             QuestId = int.Parse(ConfigurationManager.AppSettings["QuestId"]);
             QuestServiceClient = new QuestServiceClient(instanceContext);
-            QuestServiceClient.RegisterQuestClient(QuestId);
-
-            /*var keys = QuestServiceClient.GetQuestKeys(QuestId);
-            QusetStages = new Stages(keys);*/
-
-            
+            var keys = QuestServiceClient.RegisterQuestClient(QuestId);
+            QusetStages = new Stages(keys);
+            callback.Stages = QusetStages;
         }
         
     }

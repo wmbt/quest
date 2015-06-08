@@ -13,10 +13,10 @@ namespace QuestService
     public interface IQuestService
     {
         [OperationContract]
-        IEnumerable<Key> GetQuestKeys(int questId);
+        Key[] RegisterQuestClient(int questId);
 
         [OperationContract(IsOneWay = true)]
-        void RegisterQuestClient(int questId);
+        void QuestCompleted(int questId);
 
     }
 }

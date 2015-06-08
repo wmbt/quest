@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using QuestClient;
 
 namespace Quests
 {
@@ -20,9 +21,27 @@ namespace Quests
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Stages Stages { get; set; }
         public MainWindow()
         {
+            var app = (App) Application.Current;
             InitializeComponent();
+            Stages = app.QusetStages;
+
+            ShowKeyButton.IsEnabled = false;
+
+            Stages.KeyPublished += StagesOnKeyPublished;
+            Stages.StageCompleted += StagesOnStageCompleted;
+        }
+
+        private void StagesOnStageCompleted(object sender, StageCompletedHandlerArgs args)
+        {
+                    
+        }
+
+        private void StagesOnKeyPublished(object sender, KeyPublishedHandlerArgs args)
+        {
+                
         }
     }
 }

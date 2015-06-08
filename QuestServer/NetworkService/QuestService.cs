@@ -1,55 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel;
 using System.Windows;
 using Common;
+using QuestServer.Models;
 using QuestServer.Storage;
 using QuestService;
 
 namespace QuestServer.NetworkService
 {
     // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени класса "QuestService" в коде и файле конфигурации.
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class QuestService : IQuestService
     {
         private readonly App _app;
         private readonly Provider _provider;
-
-
-        public QuestService()
+        public ClientCollection Clients { get; private set; }
+        
+        public QuestService(ClientCollection clients)
         {
+            Clients = clients;
             _app = ((App) Application.Current);
             _provider = _app.Provider;
         }
 
-        public IEnumerable<Key> GetQuestKeys(int questId)
-        {
-
-            var keys = _provider.GetQuestKeys(questId);
-            return keys;
-        }
-
-        public void RegisterQuestClient( int questId)
+        public Key[] RegisterQuestClient( int questId)
         {
             var context = OperationContext.Current;
-            var clients = _app.Clients;
-            
-            clients.RegisterClient(questId, context);
+            var quest = _provider.GetQuest(questId);
+
+            _app.Dispatcher.Invoke(() => { Clients.Add(new Client(context, quest)); });
 
             context.Channel.Closed += ChannelOnClosed;
             context.Channel.Faulted += ChannelOnFaulted;
+            
+            return quest.Keys;
+        }
+
+        public void QuestCompleted(int questId)
+        {
+            _app.Dispatcher.Invoke(() =>
+            {
+                var client = Clients.Single(x => x.Quest.Id == questId);
+                client.Completed();    
+            });
+        }
+
+        private void UnregisterClient(IContextChannel channel)
+        {
+            _app.Dispatcher.Invoke(() =>
+            {
+                var c = Clients.Single(x => x.SessionId == channel.SessionId);
+                Clients.Remove(c);
+            });
         }
 
         private void ChannelOnFaulted(object sender, EventArgs eventArgs)
         {
-            var channel = (IContextChannel) sender;
-            _app.Clients.UnregisterClient(channel.SessionId);
+            UnregisterClient((IContextChannel) sender);
         }
 
         private void ChannelOnClosed(object sender, EventArgs eventArgs)
         {
-            var channel = (IContextChannel)sender;
-            _app.Clients.UnregisterClient(channel.SessionId);   
+            UnregisterClient((IContextChannel) sender);
         }
     }
 }

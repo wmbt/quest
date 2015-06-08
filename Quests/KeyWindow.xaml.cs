@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,24 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using QuestServer.Models;
 
-namespace QuestServer
+namespace QuestClient
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для KeyWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class KeyWindow : Window
     {
-
-        private MainViewModel _model;
-        public MainWindow()
+        public KeyWindow()
         {
-            var app = App.GetApp();
-            _model = new MainViewModel(app.Clients);
-            DataContext = _model;
             InitializeComponent();
         }
     }
