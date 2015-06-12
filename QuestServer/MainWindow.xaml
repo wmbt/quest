@@ -4,7 +4,7 @@
         xmlns:networkService="clr-namespace:QuestServer.NetworkService" x:Class="QuestServer.MainWindow"
         Title="Сервер квестов" Height="350" Width="525">
     <Grid>
-        <ListBox Margin="0,15,0,0" VerticalAlignment="Top" Height="220" Width="480" HorizontalAlignment="Center"
+        <ListBox Margin="18,15,19,0" VerticalAlignment="Top" Height="247" Width="480" HorizontalAlignment="Center"
                  DataContext="{Binding}" ItemsSource="{ Binding Clients }" x:Name="ClientsList" AllowDrop="False" HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
@@ -36,6 +36,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button Content="Редактировать квесты" Click="EditQuestsOnClick" HorizontalAlignment="Left" Margin="18,279,0,0" VerticalAlignment="Top" Width="142"/>
 
     </Grid>
 </Window>

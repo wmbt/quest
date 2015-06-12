@@ -75,12 +75,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="KeyEditor.xaml.cs">
+      <DependentUpon>KeyEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\ClientCollection.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Command.cs" />
     <Compile Include="Models\MainViewModel.cs" />
     <Compile Include="Models\Quest.cs" />
     <Compile Include="Models\Sensor.cs" />
+    <Compile Include="QuestEditor.xaml.cs">
+      <DependentUpon>QuestEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage\Provider.cs" />
     <Compile Include="Storage\QuestDbDataSet.cs">
       <DependentUpon>QuestDbDataSet.xsd</DependentUpon>
@@ -91,6 +97,10 @@
       <DependentUpon>QuestDbDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="NetworkService\QuestService.cs" />
+    <Page Include="KeyEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +113,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="QuestEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

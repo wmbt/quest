@@ -31,5 +31,15 @@ namespace QuestServer
             DataContext = _model;
             InitializeComponent();
         }
+
+        private void EditQuestsOnClick(object sender, RoutedEventArgs e)
+        {
+            var questEditor = new QuestEditor
+            {
+                Owner = this
+            };
+
+            questEditor.ShowDialog();
+        }
     }
 }

@@ -1,0 +1,19 @@
+﻿<Window x:Class="QuestServer.QuestEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuestEditor" Height="392.553" Width="511.703">
+    <Grid>
+        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="380" x:Name="QuestsCbx" SelectionChanged="QuestsCbxOnSelectionChanged"/>
+        <Button Content="Переименовать" HorizontalAlignment="Left" Margin="395,10,0,0" VerticalAlignment="Top" Width="99"/>
+        <Button Content="Отмена" HorizontalAlignment="Left" Margin="419,331,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="ОК" HorizontalAlignment="Left" Margin="339,331,0,0" VerticalAlignment="Top" Width="75"/>
+        <DataGrid HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Height="271" Width="484" ColumnHeaderHeight="24" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="№" CanUserResize="False" Width="40"/>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Описание" CanUserResize="False" Width="*"/>
+                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Продолжительность" CanUserResize="False" Width="130"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>

@@ -16,6 +16,8 @@ namespace QuestServer.Storage
         private readonly KeysTableAdapter _keysTableAdapter = new KeysTableAdapter();
         private readonly QuestsTableAdapter _questsTableAdapter = new QuestsTableAdapter();
 
+        publ
+
         public Provider()
         {
             _questsTableAdapter.Fill(_dataSet.Quests);
