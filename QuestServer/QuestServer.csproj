@@ -184,11 +184,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Storage\QuestDb.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Storage\QuestDb.mdf" />
     <Content Include="Storage\QuestDb_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>QuestDb.mdf</DependentUpon>
     </Content>
   </ItemGroup>
