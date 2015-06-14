@@ -18,15 +18,15 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Image Grid.Row="0"  Grid.Column="0" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key1"/>
-        <Image Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key2"/>
-        <Image Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key3"/>
-        <Image Grid.Row="0"  Grid.Column="3" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key4"/>
-        <Image Grid.Row="1"  Grid.Column="0" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key5"/>
-        <Image Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key6"/>
-        <Image Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key7"/>
-        <Image Grid.Row="1"  Grid.Column="3" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key8"/>
-        <Image Grid.Row="2"  Grid.Column="0" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key9"/>
-        <Image Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Left" Height="150" Width="150" Margin="5" x:Name="Key10"/>
+        <Button  Grid.Row="0"  Grid.Column="0" x:Name="Key1" Style="{StaticResource LockStyle}" Focusable="False"/>
+        <Button  Grid.Row="0"  Grid.Column="1" x:Name="Key2" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="0"  Grid.Column="2" x:Name="Key3" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="0"  Grid.Column="3" x:Name="Key4" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="1"  Grid.Column="0" x:Name="Key5" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="1"  Grid.Column="1" x:Name="Key6" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="1"  Grid.Column="2" x:Name="Key7" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="1"  Grid.Column="3" x:Name="Key8" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="2"  Grid.Column="0" x:Name="Key9" Style="{StaticResource LockStyle}"/>
+        <Button IsEnabled="False" Grid.Row="2"  Grid.Column="1" x:Name="Key10" Style="{StaticResource LockStyle}"/>
     </Grid>
 </Window>

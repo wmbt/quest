@@ -26,12 +26,12 @@ namespace Quests
         {
             var app = (App) Application.Current;
             InitializeComponent();
-            Stages = app.QusetStages;
+            //Stages = app.QusetStages;
 
-            ShowKeyButton.IsEnabled = false;
+            /*ShowKeyButton.IsEnabled = false;*/
 
-            Stages.KeyPublished += StagesOnKeyPublished;
-            Stages.StageCompleted += StagesOnStageCompleted;
+            //Stages.KeyPublished += StagesOnKeyPublished;
+            //Stages.StageCompleted += StagesOnStageCompleted;
         }
 
         private void StagesOnStageCompleted(object sender, StageCompletedHandlerArgs args)
