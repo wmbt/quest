@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using QuestServer.Models;
 using QuestServer.Storage;
 
 namespace QuestServer
@@ -23,24 +24,22 @@ namespace QuestServer
     /// </summary>
     public partial class KeyEditor : Window
     {
-        private readonly App _app = App.GetApp();
-        private QuestDbDataSet _ds;
-        private readonly QuestDbDataSet.KeysRow _currentRow;
-        public KeyEditor(QuestDbDataSet.KeysRow keysRow)
+        private readonly KeyEditorViewModel _model;
+        public KeyEditor(KeyEditorViewModel model)
         {
             InitializeComponent();
-            _currentRow = keysRow;
-            _ds = _app.Provider.GetDataSet();
+            _model = model;
+            DataContext = model;
+            
+            DescriptionTbx.Text = model.Description;
+            DurationTbx.Text = model.Duration;
 
-            DescriptionTbx.Text = keysRow.Description;
-            DurationTbx.Text = keysRow.TimeOffset.TotalMinutes.ToString(CultureInfo.InvariantCulture);
 
-            if (!keysRow.IsImageNull() && keysRow.Image.Length > 0)
+            var image = model.GetBitmapImage();
+            if (image != null)
             {
-                KeyImage.Source = GetBitmapImage(keysRow.Image);
+                KeyImage.Source = image;
             }
-
-
         }
 
         private void SelImageOnClick(object sender, RoutedEventArgs e)
@@ -49,42 +48,20 @@ namespace QuestServer
 
             if (openFileDialog.ShowDialog() == true)
             {
-                KeyImage.Source = GetBitmapImage(openFileDialog.FileName);
+                KeyImage.Source = KeyEditorViewModel.GetBitmapImage(openFileDialog.FileName);
             }
 
         }
 
-        private BitmapImage GetBitmapImage(string path)
-        {
-            var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
-            
-            var image = new BitmapImage();
-            image.BeginInit();
-            image.StreamSource = fileStream;
-            image.EndInit();
-
-            return image;
-        }
-
-        private BitmapImage GetBitmapImage(byte[] imageBytes)
-        {
-            var stream = new MemoryStream(imageBytes);
-
-            var image = new BitmapImage();
-            image.BeginInit();
-            image.StreamSource = stream;
-            image.EndInit();
-
-            return image;
-        }
+        
 
         private void ButtonSaveOnClick(object sender, RoutedEventArgs e)
         {
             var minutes = int.Parse(DurationTbx.Text);
             
-            _currentRow.BeginEdit();
-            _currentRow.Description = DescriptionTbx.Text;
-            _currentRow.TimeOffset = new TimeSpan(0, minutes, 0);
+            _model.KeyRow.BeginEdit();
+            _model.KeyRow.Description = DescriptionTbx.Text;
+            _model.KeyRow.TimeOffset = new TimeSpan(0, minutes, 0);
 
             var image = (BitmapImage) KeyImage.Source;
             if (image != null)
@@ -101,16 +78,17 @@ namespace QuestServer
                     }
                 }
 
-                
-                _currentRow.Image = buffer;
+
+                _model.KeyRow.Image = buffer;
             }
             else
             {
-                _currentRow.SetImageNull();
+                _model.KeyRow.SetImageNull();
             }
-            
-            _currentRow.EndEdit();
-            //_currentRow.SetModified();
+
+            _model.KeyRow.EndEdit();
+            _model.Key.OnPropertyChanged("Description");
+            _model.Key.OnPropertyChanged("Duration");
             Close();
         }
 

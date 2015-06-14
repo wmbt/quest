@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using QuestServer.Models;
 using QuestServer.Storage;
 
 namespace QuestServer
@@ -20,32 +21,23 @@ namespace QuestServer
     /// </summary>
     public partial class QuestEditor : Window
     {
-        private readonly App _app = App.GetApp();
-        private QuestDbDataSet _ds;
-        public QuestEditor()
+        private readonly QuestEditorViewModel _model;
+        public QuestEditor(QuestEditorViewModel model)
         {
 
            InitializeComponent();
-
-            _ds = _app.Provider.GetDataSet();
-
-            var quests = _ds.Quests.OrderBy(x => x.Id);
-            QuestsCbx.DataContext = quests;
-
+            _model = model;
+            DataContext = model;
             QuestsCbx.SelectedIndex = 0;
-
         }
 
         private void QuestsCbxOnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selected = (QuestDbDataSet.QuestsRow)e.AddedItems[0];
-            var keys = selected.GetKeysRows();
-
-
-            KeysGrid.DataContext = keys;
+            var selected = (QuestEditorViewModel.CbxItem)e.AddedItems[0];
+            _model.FillKeys(selected.QuestRow);
         }
 
-        private void OnRowDoubleClick(object sender, MouseButtonEventArgs e)
+        /*private void OnRowDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var row = (DataGridRow) sender;
             var keyEditor = new KeyEditor((QuestDbDataSet.KeysRow) row.Item)
@@ -54,22 +46,32 @@ namespace QuestServer
             };
 
             keyEditor.ShowDialog();
-        }
+        }*/
 
         private void ButtonCancelOnClick(object sender, RoutedEventArgs e)
         {
             
-            _ds.RejectChanges();
+            _model.DataSet.RejectChanges();
             Close();
         }
 
         private void ButtonOkOnClick(object sender, RoutedEventArgs e)
         {
-            
-            var i = _app.Provider.UpdateKeys();
-            var j = _app.Provider.UpdateQuests();
-            //_ds.AcceptChanges();
+
+            _model.Provider.UpdateKeys();
+            _model.Provider.UpdateQuests();
             Close();
+        }
+
+        private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = (ListView)sender;
+            var keyEditor = new KeyEditor(new KeyEditorViewModel((QuestServer.Models.ListItem)row.SelectedItem))
+            {
+                Owner = this
+            };
+
+            keyEditor.ShowDialog();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace QuestServer
     public partial class MainWindow : Window
     {
 
-        private MainViewModel _model;
+        private readonly MainViewModel _model;
         public MainWindow()
         {
             var app = App.GetApp();
@@ -34,7 +34,7 @@ namespace QuestServer
 
         private void EditQuestsOnClick(object sender, RoutedEventArgs e)
         {
-            var questEditor = new QuestEditor
+            var questEditor = new QuestEditor(new QuestEditorViewModel())
             {
                 Owner = this
             };
