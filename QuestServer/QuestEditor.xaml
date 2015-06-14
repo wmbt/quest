@@ -3,16 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="QuestEditor" Height="392.553" Width="511.703">
     <Grid>
-        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="380" x:Name="QuestsCbx" SelectionChanged="QuestsCbxOnSelectionChanged"/>
+        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="380" 
+                  ItemsSource="{Binding}" DisplayMemberPath="Desccription" SelectedValuePath="Id"
+                  x:Name="QuestsCbx" SelectionChanged="QuestsCbxOnSelectionChanged"/>
         <Button Content="Переименовать" HorizontalAlignment="Left" Margin="395,10,0,0" VerticalAlignment="Top" Width="99"/>
-        <Button Content="Отмена" HorizontalAlignment="Left" Margin="419,331,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="ОК" HorizontalAlignment="Left" Margin="339,331,0,0" VerticalAlignment="Top" Width="75"/>
-        <DataGrid HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Height="271" Width="484" ColumnHeaderHeight="24" AutoGenerateColumns="False">
+        <Button Content="Отмена" Click="ButtonCancelOnClick" HorizontalAlignment="Left" Margin="419,331,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="ОК" Click="ButtonOkOnClick" HorizontalAlignment="Left" Margin="339,331,0,0" VerticalAlignment="Top" Width="75"/>
+        <DataGrid HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top" Height="271" Width="484" 
+                  ColumnHeaderHeight="24" AutoGenerateColumns="False" x:Name="KeysGrid" ItemsSource="{Binding}" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="№" CanUserResize="False" Width="40"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Описание" CanUserResize="False" Width="*"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Продолжительность" CanUserResize="False" Width="130"/>
+                <DataGridTextColumn Binding="{Binding Path=OrderNmb}" ClipboardContentBinding="{x:Null}" Header="№" CanUserResize="False" Width="40"/>
+                <DataGridTextColumn Binding="{Binding Path=Description}" ClipboardContentBinding="{x:Null}" Header="Описание" CanUserResize="False" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=TimeOffset}" ClipboardContentBinding="{x:Null}" Header="Продолжительность" CanUserResize="False" Width="130"/>
             </DataGrid.Columns>
+            <DataGrid.Resources>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="MouseDoubleClick" Handler="OnRowDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
 
     </Grid>
