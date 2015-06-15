@@ -7,8 +7,10 @@ using System.ServiceModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Xml.Schema;
+using Common.Phone;
 using QuestClient;
 using QuestClient.NetworkService;
 
@@ -19,6 +21,7 @@ namespace Quests
     /// </summary>
     public partial class MainWindow : Window
     {
+        private PhoneEngine _phone;
         private readonly DispatcherTimer _dispatcherTimer;
         private Stages Stages { get; set; }
         private readonly Dictionary<Stage, Button> _keyButtons = new Dictionary<Stage, Button>();
@@ -28,11 +31,17 @@ namespace Quests
         public MainWindow()
         {
             InitializeComponent();
+            
             _app = (App) Application.Current;
             _dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 1) };
             _dispatcherTimer.Tick += DispatcherTimerOnTick;
             _networkWatcher = new Timer { Interval = 10000 };
             _networkWatcher.Elapsed += NetworkWatcherOnElapsed;
+            _phone = new PhoneEngine(_app.QuestId);
+            _phone.InitializeCall();
+
+
+            
             _networkWatcher.Start();
 
             if (!_app.Connected)

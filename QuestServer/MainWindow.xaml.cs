@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Common.Phone;
 using QuestServer.Models;
 
 namespace QuestServer
@@ -23,6 +24,7 @@ namespace QuestServer
     public partial class MainWindow : Window
     {
 
+        //private PhoneEngine _phone;
         private readonly MainViewModel _model;
         public MainWindow()
         {
