@@ -38,7 +38,7 @@ namespace Quests
             _networkWatcher = new Timer { Interval = 10000 };
             _networkWatcher.Elapsed += NetworkWatcherOnElapsed;
             _phone = new PhoneEngine(_app.QuestId);
-            _phone.InitializeCall();
+            _phone.Connect();
 
 
             
