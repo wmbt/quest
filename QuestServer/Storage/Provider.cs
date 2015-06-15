@@ -47,7 +47,7 @@ namespace QuestServer.Storage
                 Description = x.Description,
                 QuestId = qRow.Id,
                 TimeOffset = x.TimeOffset,
-                /*Image = x.Image,*/
+                Image = x.IsImageNull() ? null : x.Image,
                 SensorId = x.SensorId
             }).ToArray();
 

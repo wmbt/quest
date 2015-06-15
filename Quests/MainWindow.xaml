@@ -5,7 +5,7 @@
         WindowStyle="None" 
         WindowState="Normal" 
         ResizeMode="NoResize" Topmost="False" Background="SlateGray">
-    <Grid HorizontalAlignment="Center" Margin="0,50,0,0" VerticalAlignment="Top">
+    <Grid HorizontalAlignment="Center" Margin="0,50,0,0" VerticalAlignment="Top" x:Name="Grid">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -18,15 +18,18 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button  Grid.Row="0"  Grid.Column="0" x:Name="Key1" Style="{StaticResource LockStyle}" Focusable="False"/>
-        <Button  Grid.Row="0"  Grid.Column="1" x:Name="Key2" Style="{StaticResource LockStyle}"/>
-        <Button  Grid.Row="0"  Grid.Column="2" x:Name="Key3" Style="{StaticResource LockStyle}"/>
-        <Button  Grid.Row="0"  Grid.Column="3" x:Name="Key4" Style="{StaticResource LockStyle}"/>
-        <Button  Grid.Row="1"  Grid.Column="0" x:Name="Key5" Style="{StaticResource LockStyle}"/>
-        <Button  Grid.Row="1"  Grid.Column="1" x:Name="Key6" Style="{StaticResource LockStyle}"/>
-        <Button  Grid.Row="1"  Grid.Column="2" x:Name="Key7" Style="{StaticResource LockStyle}"/>
-        <Button  Grid.Row="1"  Grid.Column="3" x:Name="Key8" Style="{StaticResource LockStyle}"/>
-        <Button  Grid.Row="2"  Grid.Column="0" x:Name="Key9" Style="{StaticResource LockStyle}"/>
-        <Button IsEnabled="False" Grid.Row="2"  Grid.Column="1" x:Name="Key10" Style="{StaticResource LockStyle}"/>
+        <Button  Grid.Row="0"  Grid.Column="0" x:Name="Key1" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="0"  Grid.Column="1" x:Name="Key2" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="0"  Grid.Column="2" x:Name="Key3" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="0"  Grid.Column="3" x:Name="Key4" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="1"  Grid.Column="0" x:Name="Key5" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="1"  Grid.Column="1" x:Name="Key6" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="1"  Grid.Column="2" x:Name="Key7" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="1"  Grid.Column="3" x:Name="Key8" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="2"  Grid.Column="0" x:Name="Key9" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button  Grid.Row="2"  Grid.Column="1" x:Name="Key10" Style="{StaticResource LockStyle}" IsEnabled="False" Click="LockOnClick" />
+        <Button IsEnabled="False" x:Name="CallButton" Content="Вызов оператора" Grid.Column="3" HorizontalAlignment="Left" Margin="22,226,0,-61" Grid.Row="2" VerticalAlignment="Top" Width="118" Height="35"/>
+        <Label Visibility="Hidden" x:Name="TotalElapsed" Content="До окончания осталось" HorizontalAlignment="Left" Margin="10,214,0,-44" Grid.Row="2" VerticalAlignment="Top" FontSize="16" Grid.ColumnSpan="3" Height="30" Width="430"/>
+        <Label Visibility="Hidden" x:Name="CurrentElapsed" Content="Следующая подсказка будет доступна через" HorizontalAlignment="Left" Height="35" Margin="10,249,0,-84" Grid.Row="2" VerticalAlignment="Top" Width="430" Grid.ColumnSpan="3" FontSize="16" RenderTransformOrigin="0.407,0.886"/>
     </Grid>
 </Window>

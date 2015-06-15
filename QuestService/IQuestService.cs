@@ -18,5 +18,8 @@ namespace QuestService
         [OperationContract(IsOneWay = true)]
         void QuestCompleted(int questId);
 
+        [OperationContract]
+        bool Ping();
+
     }
 }

@@ -4,9 +4,9 @@
         Title="KeyWindow" Height="517" Width="429" Background="Gray" BorderThickness="1"
         WindowStyle="ToolWindow">
     <Grid>
-        <Button Content="Закрыть" HorizontalAlignment="Left" Margin="163,458,0,0" VerticalAlignment="Top" Width="75"/>
-        <Label Content="Label" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="270"/>
-        <Image HorizontalAlignment="Left" Height="400" Margin="9,41,0,0" VerticalAlignment="Top" Width="400"/>
+        <Button Content="Закрыть" HorizontalAlignment="Left" Margin="163,458,0,0" VerticalAlignment="Top" Width="75" Click="CloseOnClick"/>
+        <Label Content="" x:Name="Description" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="270"/>
+        <Image x:Name="KeyImage" HorizontalAlignment="Left" Height="400" Margin="9,41,0,0" VerticalAlignment="Top" Width="400"/>
 
     </Grid>
 </Window>

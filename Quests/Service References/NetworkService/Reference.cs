@@ -26,6 +26,12 @@ namespace QuestClient.NetworkService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/QuestCompleted")]
         System.Threading.Tasks.Task QuestCompletedAsync(int questId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/Ping", ReplyAction="http://tempuri.org/IQuestService/PingResponse")]
+        bool Ping();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/Ping", ReplyAction="http://tempuri.org/IQuestService/PingResponse")]
+        System.Threading.Tasks.Task<bool> PingAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -86,6 +92,14 @@ namespace QuestClient.NetworkService {
         
         public System.Threading.Tasks.Task QuestCompletedAsync(int questId) {
             return base.Channel.QuestCompletedAsync(questId);
+        }
+        
+        public bool Ping() {
+            return base.Channel.Ping();
+        }
+        
+        public System.Threading.Tasks.Task<bool> PingAsync() {
+            return base.Channel.PingAsync();
         }
     }
 }

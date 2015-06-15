@@ -37,6 +37,11 @@ namespace QuestServer.NetworkService
             return quest.Keys;
         }
 
+        public bool Ping()
+        {
+            return true;
+        }
+
         public void QuestCompleted(int questId)
         {
             _app.Dispatcher.Invoke(() =>

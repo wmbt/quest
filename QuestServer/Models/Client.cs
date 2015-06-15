@@ -53,8 +53,8 @@ namespace QuestServer.Models
 
         public void Completed()
         {
-            //StartCommand.Enabled = true;
-            //StopCommand.Enabled = false;
+            StartCommand.Enabled = true;
+            StopCommand.Enabled = false;
         }
     }
 

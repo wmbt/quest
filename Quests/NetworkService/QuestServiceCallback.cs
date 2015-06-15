@@ -16,17 +16,24 @@ namespace QuestClient.NetworkService
 
         public void SensorTriggered(int sensorId)
         {
-            Stages.SensorTriggered(sensorId);
+            //Stages.SensorTriggered(sensorId);
         }
 
         public void StartQuest()
         {
-            Stages.StartWatch();
+            _app.Dispatcher.Invoke(() =>
+            {
+                Stages.StartWatch();
+            });
+            
         }
 
         public void StopQuest()
         {
-            Stages.StopWatch();
+            _app.Dispatcher.Invoke(() =>
+            {
+                Stages.StopWatch();    
+            });
         }
 
         public QuestState GetQuestState()
