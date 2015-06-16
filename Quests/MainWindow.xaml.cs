@@ -37,9 +37,7 @@ namespace Quests
             _dispatcherTimer.Tick += DispatcherTimerOnTick;
             _networkWatcher = new Timer { Interval = 10000 };
             _networkWatcher.Elapsed += NetworkWatcherOnElapsed;
-            _phone = new PhoneEngine(_app.QuestId);
-            _phone.Connect();
-
+            
 
             
             _networkWatcher.Start();
@@ -61,7 +59,7 @@ namespace Quests
 
             _app.Dispatcher.Invoke(() =>
             {
-                var locks = Grid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
+                var locks = TopGrid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
                 for (var i = 0; i < locks.Length; i++)
                 {
                     _keyButtons.Add(Stages[i], locks[i]);
@@ -130,7 +128,7 @@ namespace Quests
                 TotalElapsed.Content = string.Format("Время до окончания квеста {0}", totalRemaining.ToString("mm\\:ss"));
 
                 var currentRemaining = Stages.CurrentStage.Key.TimeOffset - Stages.CurrentTime.Elapsed;
-                CurrentElapsed.Content = string.Format("Время  до следующей подсказки {0}",
+                CurrentElapsed.Content = string.Format("Время до следующей подсказки {0}",
                     currentRemaining.ToString("mm\\:ss"));
 
                 if (!TotalElapsed.IsVisible)
@@ -184,6 +182,12 @@ namespace Quests
             
             var keyViewer = new KeyWindow(stage.Key){ Owner = this};
             keyViewer.ShowDialog();
+        }
+
+        private void CallButtonOnClick(object sender, RoutedEventArgs e)
+        {
+            var phoneWindow = new PhoneWindow() { Owner = this };
+            phoneWindow.ShowDialog();
         }
     }
 }

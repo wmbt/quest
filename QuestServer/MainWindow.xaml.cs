@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -24,14 +25,36 @@ namespace QuestServer
     public partial class MainWindow : Window
     {
 
-        //private PhoneEngine _phone;
+        private readonly PhoneEngine _phone;
         private readonly MainViewModel _model;
+        private readonly App _app;
+
         public MainWindow()
         {
-            var app = App.GetApp();
-            _model = new MainViewModel(app.Clients);
+            var sendPort = int.Parse(ConfigurationManager.AppSettings["SendToCommandPort"]);
+            var listenPort = int.Parse(ConfigurationManager.AppSettings["ListenCommandPort"]);
+            
+            _app = App.GetApp();
+            _model = new MainViewModel(_app.Clients);
+            _phone = new PhoneEngine(-1, false, sendPort, listenPort);
+            _phone.OnCallRecieved += PhoneOnOnCallRecieved;
             DataContext = _model;
             InitializeComponent();
+        }
+
+        private void PhoneOnOnCallRecieved(object sender, CallRecivedEventHandlerArgs args)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var questId = int.Parse(args.ClientId);
+                var clientName = _app.Provider.GetDataSet().Quests.FindById(questId).Desccription;
+                var phoneWindow = new PhoneWindow(_phone)
+                {
+                    CallerName = clientName,
+                    Owner = this
+                };
+                phoneWindow.ShowDialog();
+            });
         }
 
         private void EditQuestsOnClick(object sender, RoutedEventArgs e)

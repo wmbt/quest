@@ -1,24 +1,28 @@
 ﻿<Window x:Class="QuestServer.QuestEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="QuestEditor" Height="392.553" Width="511.703" DataContext="{ Binding }">
-    <Grid>
-        <ComboBox HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="484" 
+        Title="Редактор квеста" DataContext="{ Binding }" BorderThickness="0" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" Width="500" WindowStartupLocation="CenterOwner" Height="450" WindowStyle="ToolWindow">
+    <StackPanel VerticalAlignment="Top" Margin="10,5,10,0">
+        <Label Content="Выберите квест:" Height="26" Margin="-3,0,0,0"/>
+        <ComboBox Margin="0,-2,0,0" VerticalAlignment="Top" 
                   ItemsSource="{Binding Path=Quests}" DisplayMemberPath="Description"
-                  x:Name="QuestsCbx" SelectionChanged="QuestsCbxOnSelectionChanged"/>
-        <Button Content="Отмена" Click="ButtonCancelOnClick" HorizontalAlignment="Left" Margin="419,331,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="ОК" Click="ButtonOkOnClick" HorizontalAlignment="Left" Margin="339,331,0,0" VerticalAlignment="Top" Width="75"/>
-        <ListView HorizontalAlignment="Left" Height="277" Margin="10,37,0,0" VerticalAlignment="Top" Width="484" 
-                  ItemsSource="{Binding Path=Keys}" MouseDoubleClick="Control_OnMouseDoubleClick">
+                  x:Name="QuestsCbx" SelectionChanged="QuestsCbxOnSelectionChanged" BorderThickness="1"/>
+        <Label Content="Решения квеста:" Height="24" Margin="-2,5,0,0"/>
+        <ListView Margin="0" VerticalAlignment="Top" 
+                  ItemsSource="{Binding Path=Keys}" MouseDoubleClick="Control_OnMouseDoubleClick" Height="290">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
                         <GridViewColumn Header="№" DisplayMemberBinding="{Binding Path=Number}" Width="50"></GridViewColumn>
-                        <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Path=Description}" Width="290"></GridViewColumn>
-                        <GridViewColumn Header="Продолжительность" DisplayMemberBinding="{Binding Path=Duration}" Width="130"></GridViewColumn>
+                        <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Path=Description}" Width="270"></GridViewColumn>
+                        <GridViewColumn Header="Время (мин.)" DisplayMemberBinding="{Binding Path=Duration}" Width="120"></GridViewColumn>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>
         </ListView>
-    </Grid>
-</Window>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,10,0,0" FlowDirection="RightToLeft">
+            <Button Content="Отмена" Click="ButtonCancelOnClick" VerticalAlignment="Top" Width="75" Height="24" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
+            <Button Content="ОК" Click="ButtonOkOnClick" Margin="10,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Height="24"/>
+        </StackPanel>
+    </StackPanel>
+ </Window>

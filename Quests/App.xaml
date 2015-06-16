@@ -4,76 +4,17 @@
              xmlns:quests="clr-namespace:Quests"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <Style x:Key="Glyphs">
-            <Setter Property="TextElement.FontFamily" Value="pack://application:,,,/fonts/#WebHostingHub-Glyphs"></Setter>
-        </Style>
-        <ImageBrush x:Key="EnabledBackground" ImageSource="pack://application:,,,/Media/unlocked.png" Stretch="UniformToFill"/>
-        <ImageBrush x:Key="DisabledBackground" ImageSource="pack://application:,,,/Media/locked.png" Stretch="UniformToFill"/>
-        <!--<Style x:Key="Enabled" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-            <Setter Property="Background" Value="{StaticResource EnabledBackground}"></Setter>
-            <Setter Property="Width" Value="130"></Setter>
-            <Setter Property="Height" Value="130"></Setter>
-            <Setter Property="Margin" Value="10"></Setter>
-            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-            <Setter Property="BorderThickness" Value="0"></Setter>
-            
-        </Style>-->
-        <Style x:Key="LockStyle" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid Background="{TemplateBinding Background}">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"/>
-                                    <VisualState x:Name="MouseOver"/>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background" Value="{StaticResource EnabledBackground}"></Setter>
-            <Setter Property="Width" Value="130"></Setter>
-            <Setter Property="Height" Value="130"></Setter>
-            <Setter Property="Margin" Value="10"></Setter>
-            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-            <Setter Property="BorderThickness" Value="0"></Setter>
-            <Style.Triggers>
-                <!--<MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsEnabled" Value="False"></Condition>
-                        <Condition Property="IsMouseOver" Value="True"></Condition>
-                    </MultiTrigger.Conditions>
-                    <MultiTrigger.Setters>
-                        <Setter Property="Background" Value="{StaticResource DisabledBackground}"></Setter>
-                        <Setter Property="BorderThickness" Value="1"></Setter>
-                    </MultiTrigger.Setters>
-                </MultiTrigger>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsEnabled" Value="True"></Condition>
-                        <Condition Property="IsMouseOver" Value="True"></Condition>
-                    </MultiTrigger.Conditions>
-                    <MultiTrigger.Setters>
-                        <Setter Property="Background" Value="{StaticResource EnabledBackground}"></Setter>
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <SolidColorBrush Color="Transparent"></SolidColorBrush>
-                                <></>
-                                    
-                            </Setter.Value>
-                        </Setter>
-                    </MultiTrigger.Setters>
-                </MultiTrigger>-->
-                
-                <Trigger Property="IsEnabled" Value="True">
-                    <Setter Property="Background"  Value="{StaticResource EnabledBackground}"></Setter>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background"  Value="{StaticResource DisabledBackground}"></Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <Image x:Key="KeyImage1" Source="pack://application:,,,/Media/Key1.png"/>
+        <Image x:Key="KeyImage2" Source="pack://application:,,,/Media/Key2.png"/>
+        <Image x:Key="KeyImage3" Source="pack://application:,,,/Media/Key3.png"/>
+        <Image x:Key="KeyImage4" Source="pack://application:,,,/Media/Key4.png"/>
+        <Image x:Key="KeyImage5" Source="pack://application:,,,/Media/Key5.png"/>
+        <Image x:Key="KeyImage6" Source="pack://application:,,,/Media/Key6.png"/>
+        <Image x:Key="KeyImage7" Source="pack://application:,,,/Media/Key7.png"/>
+        <Image x:Key="KeyImage8" Source="pack://application:,,,/Media/Key8.png"/>
+        <Image x:Key="KeyImage9" Source="pack://application:,,,/Media/Key9.png"/>
+        <Image x:Key="KeyImage10" Source="pack://application:,,,/Media/Key10.png"/>
+        <Image x:Key="PhoneImage" Source="pack://application:,,,/Media/phone.png"/>
+        <Image x:Key="PhoneImage2" Source="pack://application:,,,/Media/phone2.png"/>
     </Application.Resources>
 </Application>
