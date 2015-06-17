@@ -23,6 +23,7 @@ namespace QuestClient
             
             _phone.OnCallDropped += PhoneOnOnCallDropped;
             _phone.OnCallBegin += PhoneOnOnCallBegin;
+            Closing += (sender, args) => _phone.Dispose();
             _phone.BeginCall(serverIp);
 
         }
@@ -57,5 +58,6 @@ namespace QuestClient
         {
             _phone.DropCall();
         }
+        
     }
 }

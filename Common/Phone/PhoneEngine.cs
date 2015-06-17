@@ -12,17 +12,18 @@ using NAudio.Wave;
 
 namespace Common.Phone
 {
-    public class PhoneEngine
+    public class PhoneEngine : IDisposable
     {
+        private const int VoicePort = 1550;
         public event CallDroppedEventHandler OnCallDropped;
         public event CallBeginEventHandler OnCallBegin;
         public event CallRecivedEventHandler OnCallRecieved;
         
-        private readonly Socket _clientSocket;
+        private Socket _clientSocket;
         //private EndPoint _ourEndpoint;
         //private EndPoint _remoteEndpoint;
         private EndPoint _otherSideEndPoint;
-        private readonly byte[] _byteData = new byte[1024];
+        private byte[] _byteData = new byte[1024];
         private bool _connected;
         private bool _busy;
         private readonly int _questId;
@@ -37,7 +38,8 @@ namespace Common.Phone
 
         private readonly int _listenPort;
         private readonly int _sendToPort;
-        
+        private bool _stopListening;
+
 
         public PhoneEngine(int questId, bool disableListening, int sendToPort, int listenPort)
         {
@@ -59,13 +61,13 @@ namespace Common.Phone
 
             _waveIn = new WaveIn
             {
-                BufferMilliseconds = 50,
+                BufferMilliseconds = 100,
                 DeviceNumber = 0,
                 WaveFormat = _codec.RecordFormat
             };
             _waveIn.DataAvailable += RecorderOnDataAvailable;
 
-            _player = new WaveOut();
+            _player = new WaveOut() { DesiredLatency = 100};
             _waveProvider = new BufferedWaveProvider(_codec.RecordFormat);
             _player.Init(_waveProvider);
         }
@@ -101,7 +103,7 @@ namespace Common.Phone
                 byte[] message = msgToSend.ToByte();
 
                 //Send the message asynchronously.
-                _clientSocket.BeginSendTo(message, 0, message.Length, SocketFlags.None, _otherSideEndPoint, OnSend, null);
+                _clientSocket.SendTo(message, 0, message.Length, SocketFlags.None, _otherSideEndPoint);
             }
             catch (Exception ex)
             {
@@ -123,12 +125,15 @@ namespace Common.Phone
 
         private void OnCommandReciveCallback(IAsyncResult ar)
         {
+            if (_stopListening)
+                return;
+            
             _otherSideEndPoint = new IPEndPoint(IPAddress.Any, 0);
             _clientSocket.EndReceiveFrom(ar, ref _otherSideEndPoint);
 
             var msgRecived = new Data(_byteData);
 
-            //Act according to the received message.
+        //Act according to the received message.
             switch (msgRecived.cmdCommand)
             {
                 //We have an incoming call.
@@ -168,17 +173,24 @@ namespace Common.Phone
                     {
                         Disconnect((IPEndPoint)_otherSideEndPoint);
                         OnOnCallDropped(new CallDroppedEventHandlerArgs(true, false));
+                        _busy = false;
                         break;
                     }
             }
 
+            if (_stopListening)
+                return;
+
+            _byteData = new byte[1024];
+            EndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
+            //Get ready to receive more commands.
+            _clientSocket.BeginReceiveFrom(_byteData, 0, _byteData.Length, SocketFlags.None, ref remoteEndpoint, new AsyncCallback(OnCommandReciveCallback), null);
         }
 
         public void Connect(IPEndPoint clientEndPoint)
         {
             //IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), int.Parse("1550"));
-            const int listenerPort = 1550;
-            var thisMachine = new IPEndPoint(IPAddress.Any, listenerPort);
+            var thisMachine = new IPEndPoint(IPAddress.Any, VoicePort);
             _udpSender = new UdpClient();
             _udpListener = new UdpClient();
 
@@ -187,7 +199,7 @@ namespace Common.Phone
             _udpListener.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             _udpListener.Client.Bind(thisMachine);
 
-            _udpSender.Connect(clientEndPoint.Address, listenerPort);
+            _udpSender.Connect(clientEndPoint.Address, VoicePort);
 
             _player.Play();
             _waveIn.StartRecording();
@@ -207,7 +219,10 @@ namespace Common.Phone
                 {
                     byte[] b = _udpListener.Receive(ref endPoint);
                     byte[] decoded = listenerThreadState.Codec.Decode(b, 0, b.Length);
-                    _waveProvider.AddSamples(decoded, 0, decoded.Length);
+                    if (_player.PlaybackState == PlaybackState.Playing)
+                    {
+                        _waveProvider.AddSamples(decoded, 0, decoded.Length);
+                    }
                 }
             }
             catch (SocketException ex)
@@ -220,18 +235,19 @@ namespace Common.Phone
         {
             if (!_connected) 
                     return;
-
+            
             var remoteIp = ((IPEndPoint) _udpSender.Client.RemoteEndPoint).Address;
             var commandIp = clientEndPoint.Address;
 
             if (!Equals(commandIp, remoteIp))
                 return;
-            
-            
             _connected = false;
-            _waveIn.DataAvailable -= RecorderOnDataAvailable;
             _waveIn.StopRecording();
             _player.Stop();
+            
+            
+            _waveIn.DataAvailable -= RecorderOnDataAvailable;
+            
 
             _udpSender.Close();
             _udpListener.Close();
@@ -249,9 +265,10 @@ namespace Common.Phone
         {
             try
             {
+                var otherSideEndPoint = (IPEndPoint)_otherSideEndPoint;
                 //Send a Bye message to the user to end the call.
                 SendMessage(Command.Bye);
-                Disconnect((IPEndPoint)_otherSideEndPoint);
+                Disconnect(new IPEndPoint(otherSideEndPoint.Address, VoicePort));
                 _busy = false;
                 OnOnCallDropped(new CallDroppedEventHandlerArgs(true, false));
             }
@@ -277,6 +294,23 @@ namespace Common.Phone
         {
             var handler = OnCallRecieved;
             if (handler != null) handler(this, args);   
+        }
+
+        public void Dispose()
+        {
+            if (_clientSocket != null)
+            {
+                _stopListening = true;
+                _clientSocket.Dispose();
+            }
+            if (_udpListener != null)
+                _udpListener.Close();
+            if (_udpSender != null)
+                _udpSender.Close();
+            if (_player != null)
+                _player.Dispose();
+            if (_waveIn != null)
+                _waveIn.Dispose();
         }
     }
 
@@ -316,4 +350,5 @@ namespace Common.Phone
         public IPEndPoint EndPoint { get; set; }
         public INetworkChatCodec Codec { get; set; }
     }
+ 
 }

@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel;
+using System.Windows;
 using System.Windows.Input;
 using QuestService;
 
@@ -12,11 +13,13 @@ namespace QuestServer.Models
         public Command StopCommand { get; set; }
 
         private readonly IQuestServiceCallback _clientCallback;
-
+        public IContextChannel Cannel { get; private set; }
+        
         public Client(OperationContext context, Quest quest)
         {
             _clientCallback = context.GetCallbackChannel<IQuestServiceCallback>();
             SessionId = context.SessionId;
+            Cannel = context.Channel;
             Quest = quest;
 
             StartCommand = new Command(StartQuest);
@@ -28,7 +31,10 @@ namespace QuestServer.Models
         {
             StartCommand.Enabled = false;
             StopCommand.Enabled = true;
-            _clientCallback.StartQuest();
+            var app = (App) Application.Current;
+            var q = app.Provider.GetQuest(Quest.Id);
+            Quest.Keys = q.Keys;
+            _clientCallback.StartQuest(Quest.Keys);
             
 
 

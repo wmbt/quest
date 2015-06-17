@@ -9,7 +9,7 @@ namespace QuestService
         void SensorTriggered(int sensorId);
 
         [OperationContract(IsOneWay = true)]
-        void StartQuest();
+        void StartQuest(Key[] keys);
 
         [OperationContract(IsOneWay = true)]
         void StopQuest();

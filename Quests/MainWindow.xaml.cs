@@ -31,11 +31,12 @@ namespace Quests
         public MainWindow()
         {
             InitializeComponent();
-            
+
+            var hbInterval = int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]);
             _app = (App) Application.Current;
             _dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 1) };
             _dispatcherTimer.Tick += DispatcherTimerOnTick;
-            _networkWatcher = new Timer { Interval = 10000 };
+            _networkWatcher = new Timer { Interval = 1000 * hbInterval };
             _networkWatcher.Elapsed += NetworkWatcherOnElapsed;
             
 
@@ -59,12 +60,6 @@ namespace Quests
 
             _app.Dispatcher.Invoke(() =>
             {
-                var locks = TopGrid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
-                for (var i = 0; i < locks.Length; i++)
-                {
-                    _keyButtons.Add(Stages[i], locks[i]);
-                }
-
                 TotalElapsed.Visibility = Visibility.Hidden;
                 CurrentElapsed.Visibility = Visibility.Hidden;
             });
@@ -76,11 +71,12 @@ namespace Quests
             _app.Dispatcher.Invoke(() =>
             {
                 _dispatcherTimer.Stop();
-                foreach (var v in _keyButtons.Values)
+                /*foreach (var v in _keyButtons.Values)
                 {
                     v.IsEnabled = false;
-                }
-                TotalElapsed.Visibility = Visibility.Hidden;
+                }*/
+                // TotalElapsed.Visibility = Visibility.Hidden;
+                TotalElapsed.Content = "Игровое время вышло";
                 CurrentElapsed.Visibility = Visibility.Hidden;
                 _app.QuestServiceClient.QuestCompleted(_app.QuestId);
                 CallButton.IsEnabled = false;
@@ -159,6 +155,18 @@ namespace Quests
 
         private void StagesOnQuestStarted(object sender, QuestStartedHandlerArgs args)
         {
+            _keyButtons.Clear();
+            var locks = TopGrid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
+            for (var i = 0; i < locks.Length; i++)
+            {
+                _keyButtons.Add(Stages[i], locks[i]);
+            }
+            
+            TotalElapsed.Visibility = Visibility.Hidden;
+            foreach (var v in _keyButtons.Values)
+            {
+               v.IsEnabled = false;
+            }
             CallButton.IsEnabled = true;
             _dispatcherTimer.Start();
         }

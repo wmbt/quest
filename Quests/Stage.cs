@@ -42,18 +42,33 @@ namespace QuestClient
             get { return _stages[i]; }
         }
 
-        public Stages(IEnumerable<Key> keys)
+        public Stages()
         {
-            foreach (var key in keys)
-                _stages.Add(new Stage(key));
-
             _timer.Elapsed += TimerOnElapsed;
             _timer.AutoReset = false;
             QuestRunning = false;
             TotalTime = new Stopwatch();
             CurrentTime = new Stopwatch();
             QuestDuration = new TimeSpan();
+        }
 
+        public Stages(IEnumerable<Key> keys)
+            :this()
+        {
+            foreach (var key in keys)
+                _stages.Add(new Stage(key));
+            foreach (var stage in _stages)
+            {
+                QuestDuration += stage.Key.TimeOffset;
+            }
+        }
+
+        public void AssignKeys(IEnumerable<Key> keys)
+        {
+            QuestDuration = new TimeSpan();
+            _stages.Clear();
+            foreach (var key in keys)
+                _stages.Add(new Stage(key));
             foreach (var stage in _stages)
             {
                 QuestDuration += stage.Key.TimeOffset;

@@ -16,10 +16,10 @@ namespace QuestClient.NetworkService {
     public interface IQuestService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/RegisterQuestClient", ReplyAction="http://tempuri.org/IQuestService/RegisterQuestClientResponse")]
-        Common.Key[] RegisterQuestClient(int questId);
+        void RegisterQuestClient(int questId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/RegisterQuestClient", ReplyAction="http://tempuri.org/IQuestService/RegisterQuestClientResponse")]
-        System.Threading.Tasks.Task<Common.Key[]> RegisterQuestClientAsync(int questId);
+        System.Threading.Tasks.Task RegisterQuestClientAsync(int questId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/QuestCompleted")]
         void QuestCompleted(int questId);
@@ -28,10 +28,10 @@ namespace QuestClient.NetworkService {
         System.Threading.Tasks.Task QuestCompletedAsync(int questId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/Ping", ReplyAction="http://tempuri.org/IQuestService/PingResponse")]
-        bool Ping();
+        bool Ping(int questId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/Ping", ReplyAction="http://tempuri.org/IQuestService/PingResponse")]
-        System.Threading.Tasks.Task<bool> PingAsync();
+        System.Threading.Tasks.Task<bool> PingAsync(int questId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -41,7 +41,7 @@ namespace QuestClient.NetworkService {
         void SensorTriggered(int sensorId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/StartQuest")]
-        void StartQuest();
+        void StartQuest(Common.Key[] keys);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/StopQuest")]
         void StopQuest();
@@ -78,11 +78,11 @@ namespace QuestClient.NetworkService {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public Common.Key[] RegisterQuestClient(int questId) {
-            return base.Channel.RegisterQuestClient(questId);
+        public void RegisterQuestClient(int questId) {
+            base.Channel.RegisterQuestClient(questId);
         }
         
-        public System.Threading.Tasks.Task<Common.Key[]> RegisterQuestClientAsync(int questId) {
+        public System.Threading.Tasks.Task RegisterQuestClientAsync(int questId) {
             return base.Channel.RegisterQuestClientAsync(questId);
         }
         
@@ -94,12 +94,12 @@ namespace QuestClient.NetworkService {
             return base.Channel.QuestCompletedAsync(questId);
         }
         
-        public bool Ping() {
-            return base.Channel.Ping();
+        public bool Ping(int questId) {
+            return base.Channel.Ping(questId);
         }
         
-        public System.Threading.Tasks.Task<bool> PingAsync() {
-            return base.Channel.PingAsync();
+        public System.Threading.Tasks.Task<bool> PingAsync(int questId) {
+            return base.Channel.PingAsync(questId);
         }
     }
 }

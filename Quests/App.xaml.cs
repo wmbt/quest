@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.ServiceModel;
 using System.Windows;
 using QuestClient.NetworkService;
@@ -50,8 +51,8 @@ namespace QuestClient
                 var instanceContext = new InstanceContext(_callback);
                 QuestServiceClient = new QuestServiceClient(instanceContext);                
                 QuestServiceClient.Open();
-                var keys = QuestServiceClient.RegisterQuestClient(QuestId);
-                QusetStages = new Stages(keys);
+                QuestServiceClient.RegisterQuestClient(QuestId);
+                QusetStages = new Stages();
                 _callback.Stages = QusetStages;
                 Connected = true;
                 return true;
@@ -61,6 +62,8 @@ namespace QuestClient
 
                 QuestServiceClient.Abort();
                 Connected = false;
+                var msg = ex.Message + "\r\n" + ex.StackTrace;
+                EventLog.WriteEntry("QuestClient", msg);
                 return false;
             }
             
@@ -70,7 +73,7 @@ namespace QuestClient
         {
             try
             {
-               return QuestServiceClient.Ping();
+                return QuestServiceClient.Ping(QuestId);
             }
             catch (Exception ex)
             {

@@ -13,13 +13,13 @@ namespace QuestService
     public interface IQuestService
     {
         [OperationContract]
-        Key[] RegisterQuestClient(int questId);
+        void RegisterQuestClient(int questId);
 
         [OperationContract(IsOneWay = true)]
         void QuestCompleted(int questId);
 
         [OperationContract]
-        bool Ping();
+        bool Ping(int questId);
 
     }
 }

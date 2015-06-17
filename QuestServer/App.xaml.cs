@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Windows;
 using QuestServer.Models;
 using QuestServer.Storage;
@@ -13,6 +14,7 @@ namespace QuestServer
         public Provider Provider { get; private set; }
         public ClientCollection Clients { get; private set; }
         public ServiceHost ServiceHost;
+        public bool IsClosed { get; set; }
         
         public App()
         {
@@ -24,7 +26,7 @@ namespace QuestServer
         {
             if (ServiceHost == null) 
                 return;
-            
+            IsClosed = true;
             ServiceHost.Close();
             ServiceHost = null;
         }

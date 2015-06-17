@@ -19,8 +19,9 @@ namespace QuestClient.NetworkService
             //Stages.SensorTriggered(sensorId);
         }
 
-        public void StartQuest()
+        public void StartQuest(Key[] keys)
         {
+            Stages.AssignKeys(keys);
             _app.Dispatcher.Invoke(() =>
             {
                 Stages.StartWatch();

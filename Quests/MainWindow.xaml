@@ -3,44 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Квест" 
         WindowStyle="ThreeDBorderWindow" 
-        WindowState="Normal" 
-        ResizeMode="CanResize" Topmost="False">
+        WindowState="Maximized" 
+        ResizeMode="CanResize" Topmost="True" Margin="0" Height="730" MinHeight="730" Background="White">
     <Grid HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" x:Name="TopGrid">
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <!-- Устанавливаем три столбца -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button  Grid.Row="0"  Grid.Column="0" x:Name="Key1" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage1}" Margin="10" Padding="5" />
-        <Button  Grid.Row="0"  Grid.Column="1" x:Name="Key2" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage2}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="0"  Grid.Column="2" x:Name="Key3" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage3}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="0"  Grid.Column="3" x:Name="Key4" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage4}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="1"  Grid.Column="0" x:Name="Key5" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage5}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="1"  Grid.Column="1" x:Name="Key6" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage6}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="1"  Grid.Column="2" x:Name="Key7" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage7}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="1"  Grid.Column="3" x:Name="Key8" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage8}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="2"  Grid.Column="0" x:Name="Key9" Width="110" Height="110"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage9}" Margin="10" Padding="5"/>
-        <Button  Grid.Row="2"  Grid.Column="1" x:Name="Key10" Width="110" Height="110" IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage10}" Margin="10" Padding="5"/>
+        <Button  Grid.Row="0"  Grid.Column="0" x:Name="Key1" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage1}" Margin="15" Padding="5" />
+        <Button  Grid.Row="0"  Grid.Column="1" x:Name="Key2" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage2}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="0"  Grid.Column="2" x:Name="Key3" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage3}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="0"  Grid.Column="3" x:Name="Key4" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage4}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="1"  Grid.Column="0" x:Name="Key5" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage5}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="1"  Grid.Column="1" x:Name="Key6" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage6}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="1"  Grid.Column="2" x:Name="Key7" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage7}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="1"  Grid.Column="3" x:Name="Key8" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage8}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="2"  Grid.Column="0" x:Name="Key9" Width="150" Height="150"  IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage9}" Margin="15" Padding="5"/>
+        <Button  Grid.Row="2"  Grid.Column="1" x:Name="Key10" Width="150" Height="150" IsEnabled="False" Click="LockOnClick" Content="{StaticResource KeyImage10}" Margin="15" Padding="5"/>
 
         <Grid Grid.Row="3" Grid.ColumnSpan="4" Grid.Column="0" VerticalAlignment="Top" Margin="0,20,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button IsEnabled="True" x:Name="CallButton" Padding="15" Content="{StaticResource PhoneImage}" 
+            <Button IsEnabled="False" x:Name="CallButton" Padding="15" Content="{StaticResource PhoneImage}" 
                     Grid.Column="1" HorizontalAlignment="Right" Margin="0" Grid.Row="0" VerticalAlignment="Top" 
-                    Width="101" Height="93" Click="CallButtonOnClick">
+                    Width="101" Height="93" Click="CallButtonOnClick" BorderThickness="1">
                 
             </Button>
             <StackPanel Grid.Column="0" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top">

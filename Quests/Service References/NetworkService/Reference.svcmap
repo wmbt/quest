@@ -22,11 +22,11 @@
     <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/QuestServer/QuestService/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="46257310-cdb5-4567-bda7-78a59b775418" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd0" />
-    <MetadataFile FileName="QuestService.wsdl" MetadataType="Wsdl" ID="dd92238f-3470-48a3-bacb-c6847c4af571" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/QuestServer/QuestService/?wsdl" />
-    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="fe358260-5e36-4f74-a299-3b0985a6d492" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd2" />
-    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="7f339c3f-04ac-4939-b1bc-7fb9b5f8a77f" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd1" />
-    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="ae8ce18f-cf5c-4019-bf38-886f893eaf51" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/QuestServer/QuestService/?disco" />
+    <MetadataFile FileName="item1.disco" MetadataType="Disco" ID="ec65cbde-c594-469d-b5de-f928a3d9e992" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?disco" />
+    <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="4fbc3193-1980-4ff0-b312-f034b0bc3720" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd2" />
+    <MetadataFile FileName="item31.xsd" MetadataType="Schema" ID="df6782c8-f996-4757-a43b-1344a960652b" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd1" />
+    <MetadataFile FileName="QuestService1.wsdl" MetadataType="Wsdl" ID="a26050ec-367f-49ac-b201-c7cba27ea1dc" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?wsdl" />
+    <MetadataFile FileName="item32.xsd" MetadataType="Schema" ID="2f6d54cc-ec5f-4c86-8042-5af1d0f523e5" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
