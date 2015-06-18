@@ -70,6 +70,7 @@ namespace QuestServer
                 {
                     c.Cannel.Abort();
                 }
+                c.RefreshState();
             }
             _networkTimer.Start();
         }
