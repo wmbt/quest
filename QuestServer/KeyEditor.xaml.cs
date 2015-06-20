@@ -50,8 +50,8 @@ namespace QuestServer
                 return;
             
             var f = new FileInfo(openFileDialog.FileName);
-            //if (f.Length > 10485760 /* 10MB */)
-            if (f.Length > 1048576 /* 1MB */)
+            if (f.Length > 10485760 /* 10MB */)
+            //if (f.Length > 1048576 /* 1MB */)
             {
                 MessageBox.Show("Размер файла должен быть меньше 10 Мб", "Ошибка изменения изображения",
                     MessageBoxButton.OK, MessageBoxImage.Error);

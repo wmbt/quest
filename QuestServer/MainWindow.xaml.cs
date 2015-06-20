@@ -44,7 +44,7 @@ namespace QuestServer
             _model = new MainViewModel(_app.Clients);
             _phone = new PhoneEngine(-1, false, sendPort, listenPort);
             _phone.OnCallRecieved += PhoneOnOnCallRecieved;
-            _networkTimer = new Timer(2000);
+            _networkTimer = new Timer(5000);
             _networkTimer.Elapsed += NetworkTimerOnElapsed;
             DataContext = _model;
             Closing += (sender, args) =>
