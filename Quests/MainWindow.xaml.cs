@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.Linq;
-using System.ServiceModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
-using System.Xml.Schema;
 using Common.Phone;
 using QuestClient;
-using QuestClient.NetworkService;
 
 namespace Quests
 {
@@ -24,44 +20,58 @@ namespace Quests
         private PhoneEngine _phone;
         private readonly DispatcherTimer _dispatcherTimer;
         private Stages Stages { get; set; }
-        private readonly Dictionary<Stage, Button> _keyButtons = new Dictionary<Stage, Button>();
+        private readonly Dictionary<Stage, KeyButton> _currentKeyButtons = new Dictionary<Stage, KeyButton>();
         private readonly Timer _networkWatcher;
         private readonly App _app;
+        private readonly KeyButton[] _allKeyButtons;
 
         public MainWindow()
         {
             InitializeComponent();
-
+            TotalElapsed.Visibility = Visibility.Hidden;
+            
             var hbInterval = int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]);
             _app = (App) Application.Current;
             _dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 1) };
             _dispatcherTimer.Tick += DispatcherTimerOnTick;
             _networkWatcher = new Timer { Interval = 1000 * hbInterval };
             _networkWatcher.Elapsed += NetworkWatcherOnElapsed;
-            
+            _allKeyButtons = TopGrid.Children.OfType<KeyButton>().ToArray();
 
+            foreach (var keyButton in _allKeyButtons)
+            {
+                keyButton.ButtonControl.Click += LockOnClick;
+            }
+
+            Stages = _app.QusetStages;
+            Stages.KeyPublished += StagesOnKeyPublished;
+            Stages.QuestStarted += StagesOnQuestStarted;
+            Stages.QuestStopped += StagesOnQuestStopped;
+            Stages.QuestCompleted += StagesOnQuestCompleted;
             
             _networkWatcher.Start();
 
             if (!_app.Connected)
                 return;
-            PrepareWindow();
+            PrepareWindow(_app.KeysCount);
             
         }
 
-        private void PrepareWindow()
+        private void PrepareWindow(int keysCount)
         {
-            Stages = _app.QusetStages;
-
-            Stages.KeyPublished += StagesOnKeyPublished;
-            Stages.QuestStarted += StagesOnQuestStarted;
-            Stages.QuestStopped += StagesOnQuestStopped;
-            Stages.QuestCompleted += StagesOnQuestCompleted;
-
+            
+            foreach (var keyButton in _allKeyButtons)
+            {
+                keyButton.ButtonControl.IsEnabled = false;
+                keyButton.Label = string.Empty;
+                keyButton.ImageControl.Source = (ImageSource)FindResource("LockImage");
+                keyButton.Visibility =
+                    Array.IndexOf(_allKeyButtons, keyButton) < keysCount 
+                    ? Visibility.Visible : Visibility.Hidden;
+            }
             _app.Dispatcher.Invoke(() =>
             {
                 TotalElapsed.Visibility = Visibility.Hidden;
-                CurrentElapsed.Visibility = Visibility.Hidden;
             });
             
         }
@@ -71,13 +81,8 @@ namespace Quests
             _app.Dispatcher.Invoke(() =>
             {
                 _dispatcherTimer.Stop();
-                /*foreach (var v in _keyButtons.Values)
-                {
-                    v.IsEnabled = false;
-                }*/
-                // TotalElapsed.Visibility = Visibility.Hidden;
                 TotalElapsed.Content = "Игровое время вышло";
-                CurrentElapsed.Visibility = Visibility.Hidden;
+                /*CurrentElapsed.Visibility = Visibility.Hidden;*/
                 _app.QuestServiceClient.QuestCompleted(_app.QuestId);
                 CallButton.IsEnabled = false;
             });
@@ -89,9 +94,10 @@ namespace Quests
             var app = (App)Application.Current;
             if (!app.PingServer())
             {
-                if (app.ConnectToServer())
+                int keysCount = app.ConnectToServer();
+                if (keysCount > 0)
                 {
-                    PrepareWindow();
+                    PrepareWindow(keysCount);
                 }
                 else
                 {
@@ -103,11 +109,13 @@ namespace Quests
                     app.Dispatcher.Invoke(() =>
                     {
                         TotalElapsed.Visibility = Visibility.Hidden;
-                        CurrentElapsed.Visibility = Visibility.Hidden;
+                        /*CurrentElapsed.Visibility = Visibility.Hidden;*/
 
-                        foreach (var v in _keyButtons.Values)
+                        foreach (var v in _currentKeyButtons.Values)
                         {
-                            v.IsEnabled = false;
+                            v.ButtonControl.IsEnabled = false;
+                            v.Label = string.Empty;
+                            v.ImageControl.Source = (ImageSource)FindResource("LockImage");
                         }
                         CallButton.IsEnabled = false;
                     });
@@ -124,14 +132,15 @@ namespace Quests
                 TotalElapsed.Content = string.Format("Время до окончания квеста {0}", totalRemaining.ToString("mm\\:ss"));
 
                 var currentRemaining = Stages.CurrentStage.Key.TimeOffset - Stages.CurrentTime.Elapsed;
-                CurrentElapsed.Content = string.Format("Время до следующей подсказки {0}",
-                    currentRemaining.ToString("mm\\:ss"));
+                var currentButton = _currentKeyButtons.Single(x => x.Key.Key == Stages.CurrentStage.Key).Value;
+                
+                currentButton.Label = currentRemaining.ToString("mm\\:ss");
 
                 if (!TotalElapsed.IsVisible)
                     TotalElapsed.Visibility = Visibility.Visible;
                 
-                if(!CurrentElapsed.IsVisible)
-                    CurrentElapsed.Visibility = Visibility.Visible;
+                /*if(!CurrentElapsed.IsVisible)
+                    CurrentElapsed.Visibility = Visibility.Visible;*/
             }
         }
 
@@ -142,12 +151,15 @@ namespace Quests
             _app.Dispatcher.Invoke(() =>
             {
                 TotalElapsed.Visibility = Visibility.Hidden;
-                CurrentElapsed.Visibility = Visibility.Hidden;
+                /*CurrentElapsed.Visibility = Visibility.Hidden;*/
                 CallButton.IsEnabled = false;
 
-                foreach (var v in _keyButtons.Values)
+                foreach (var v in _allKeyButtons)
                 {
-                    v.IsEnabled = false;
+                    v.ButtonControl.IsEnabled = false;
+                    v.Label = String.Empty;
+                    v.ImageControl.Source = (ImageSource)FindResource("LockImage");
+                    
                 }    
             });
             
@@ -155,18 +167,22 @@ namespace Quests
 
         private void StagesOnQuestStarted(object sender, QuestStartedHandlerArgs args)
         {
-            _keyButtons.Clear();
-            var locks = TopGrid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
-            for (var i = 0; i < locks.Length; i++)
+            _currentKeyButtons.Clear();
+            var stagesCount = Stages.Count();
+            //var locks = TopGrid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
+            for (var i = 0; i < stagesCount; i++)
             {
-                _keyButtons.Add(Stages[i], locks[i]);
+                _currentKeyButtons.Add(Stages[i], _allKeyButtons[i]);
+                _allKeyButtons[i].ButtonControl.IsEnabled = false;
+                _allKeyButtons[i].Label = String.Empty;
+                _allKeyButtons[i].ImageControl.Source = (ImageSource)FindResource("LockImage");
             }
             
             TotalElapsed.Visibility = Visibility.Hidden;
-            foreach (var v in _keyButtons.Values)
+            /*foreach (var v in _currentKeyButtons.Values)
             {
                v.IsEnabled = false;
-            }
+            }*/
             CallButton.IsEnabled = true;
             _dispatcherTimer.Start();
         }
@@ -180,13 +196,15 @@ namespace Quests
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
-                _keyButtons[args.Stage].IsEnabled = true;    
+                _currentKeyButtons[args.Stage].ButtonControl.IsEnabled = true;
+                _currentKeyButtons[args.Stage].ImageControl.Source = (ImageSource)FindResource("KeyImage");
+                _currentKeyButtons[args.Stage].Label = String.Empty;
             });
         }
 
         private void LockOnClick(object sender, RoutedEventArgs e)
         {
-            var stage = _keyButtons.SingleOrDefault(x => Equals(x.Value, (Button) sender)).Key;
+            var stage = _currentKeyButtons.SingleOrDefault(x => Equals(x.Value.ButtonControl, (Button) sender)).Key;
             
             var keyViewer = new KeyWindow(stage.Key){ Owner = this};
             keyViewer.ShowDialog();

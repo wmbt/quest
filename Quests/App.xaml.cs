@@ -18,6 +18,7 @@ namespace QuestClient
         public Stages QusetStages { get; private set; }
         public int QuestId { get; private set; }
         public bool Connected { get; private set; }
+        public int KeysCount { get; set; }
         
         public App()
         {
@@ -41,21 +42,21 @@ namespace QuestClient
         {
             _callback = new QuestServiceCallback(this);
             QuestId = int.Parse(ConfigurationManager.AppSettings["QuestId"]);
-            ConnectToServer();
+            QusetStages = new Stages();
+            _callback.Stages = QusetStages;
+            KeysCount = ConnectToServer();
         }
 
-        public bool ConnectToServer()
+        public int ConnectToServer()
         {
             try
             {
                 var instanceContext = new InstanceContext(_callback);
                 QuestServiceClient = new QuestServiceClient(instanceContext);                
                 QuestServiceClient.Open();
-                QuestServiceClient.RegisterQuestClient(QuestId);
-                QusetStages = new Stages();
-                _callback.Stages = QusetStages;
-                Connected = true;
-                return true;
+                var keysCount = QuestServiceClient.RegisterQuestClient(QuestId);
+                Connected = keysCount > 0;
+                return keysCount;
             }
             catch (Exception ex)
             {
@@ -64,7 +65,7 @@ namespace QuestClient
                 Connected = false;
                 var msg = ex.Message + "\r\n" + ex.StackTrace;
                 EventLog.WriteEntry("QuestClient", msg);
-                return false;
+                return 0;
             }
             
         }

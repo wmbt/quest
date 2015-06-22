@@ -13,7 +13,7 @@ namespace QuestService
     public interface IQuestService
     {
         [OperationContract]
-        void RegisterQuestClient(int questId);
+        int RegisterQuestClient(int questId);
 
         [OperationContract(IsOneWay = true)]
         void QuestCompleted(int questId);

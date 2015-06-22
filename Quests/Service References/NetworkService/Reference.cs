@@ -16,10 +16,10 @@ namespace QuestClient.NetworkService {
     public interface IQuestService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/RegisterQuestClient", ReplyAction="http://tempuri.org/IQuestService/RegisterQuestClientResponse")]
-        void RegisterQuestClient(int questId);
+        int RegisterQuestClient(int questId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/RegisterQuestClient", ReplyAction="http://tempuri.org/IQuestService/RegisterQuestClientResponse")]
-        System.Threading.Tasks.Task RegisterQuestClientAsync(int questId);
+        System.Threading.Tasks.Task<int> RegisterQuestClientAsync(int questId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/QuestCompleted")]
         void QuestCompleted(int questId);
@@ -78,11 +78,11 @@ namespace QuestClient.NetworkService {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public void RegisterQuestClient(int questId) {
-            base.Channel.RegisterQuestClient(questId);
+        public int RegisterQuestClient(int questId) {
+            return base.Channel.RegisterQuestClient(questId);
         }
         
-        public System.Threading.Tasks.Task RegisterQuestClientAsync(int questId) {
+        public System.Threading.Tasks.Task<int> RegisterQuestClientAsync(int questId) {
             return base.Channel.RegisterQuestClientAsync(questId);
         }
         

@@ -24,7 +24,7 @@ namespace QuestServer.NetworkService
             _provider = _app.Provider;
         }
 
-        public void RegisterQuestClient( int questId)
+        public int RegisterQuestClient( int questId)
         {
             var context = OperationContext.Current;
             var quest = _provider.GetQuest(questId);
@@ -34,7 +34,7 @@ namespace QuestServer.NetworkService
             context.Channel.Closed += ChannelOnClosed;
             context.Channel.Faulted += ChannelOnFaulted;
             quest.LastPing = DateTime.Now;
-            //return quest.Keys;
+            return quest.Keys.Length;
         }
 
         public bool Ping(int questId)

@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="QuestClient.KeyButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             d:DesignHeight="150" d:DesignWidth="150">
+    <Grid>
+        <Button x:Name="KeyBtn" Height="150" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="15">
+            <StackPanel>
+                <Image x:Name="ButtonImage" Width="80" Height="80" Source="{StaticResource LockImage}"/>
+                <Label x:Name="Time" Content="" HorizontalAlignment="Center" FontSize="16pt" Height="40" />
+            </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>
