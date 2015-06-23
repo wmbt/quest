@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Windows;
 using Common.Phone;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace QuestClient
 {
@@ -14,11 +15,11 @@ namespace QuestClient
     {
         private readonly App _app;
         private readonly PhoneEngine _phone;
-        private WaveOut _backgroundWaveOut;
+        private readonly VolumeSampleProvider _backgroundWaveOut;
 
-        public PhoneWindow(WaveOut backgroundWaveOut)
+        public PhoneWindow(VolumeSampleProvider volumeSampleProvider)
         {
-            _backgroundWaveOut = backgroundWaveOut;
+            _backgroundWaveOut = volumeSampleProvider;
             var serverIp = ConfigurationManager.AppSettings["ServerIP"];
             var sendPort = int.Parse(ConfigurationManager.AppSettings["SendToCommandPort"]);
             var listenPort = int.Parse(ConfigurationManager.AppSettings["ListenCommandPort"]);

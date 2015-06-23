@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Common.Phone;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using QuestClient;
 
 namespace Quests
@@ -30,6 +31,7 @@ namespace Quests
         private readonly Timer _networkWatcher;
         private readonly App _app;
         private readonly KeyButton[] _allKeyButtons;
+        private VolumeSampleProvider _mp3Volume;
 
         public MainWindow()
         {
@@ -58,7 +60,8 @@ namespace Quests
             if (File.Exists(@"Media\background.mp3"))
             {
                 _mp3Track = new MediaFoundationReader(@"Media\background.mp3");
-                _backgroundPlayer.Init(_mp3Track);
+                _mp3Volume = new VolumeSampleProvider(_mp3Track.ToSampleProvider());
+                _backgroundPlayer.Init(_mp3Volume);
             }
 
             _networkWatcher.Start();
@@ -248,7 +251,7 @@ namespace Quests
 
         private void CallButtonOnClick(object sender, RoutedEventArgs e)
         {
-            var phoneWindow = new PhoneWindow(_backgroundPlayer) { Owner = this };
+            var phoneWindow = new PhoneWindow(_mp3Volume) { Owner = this };
             phoneWindow.ShowDialog();
         }
     }
