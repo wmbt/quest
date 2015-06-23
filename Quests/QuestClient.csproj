@@ -72,6 +72,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\NAudio-Release\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.WindowsMediaFormat">
+      <HintPath>..\NAudio-Release\NAudio.WindowsMediaFormat.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -104,13 +111,13 @@
     <Compile Include="PhoneWindow.xaml.cs">
       <DependentUpon>PhoneWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Stage.cs" />
-    <Compile Include="NetworkService\QuestServiceCallback.cs" />
     <Compile Include="Service References\NetworkService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Stage.cs" />
+    <Compile Include="NetworkService\QuestServiceCallback.cs" />
     <Page Include="KeyButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -160,6 +167,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\NetworkService\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NetworkService\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NetworkService\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\NetworkService\QuestService.wsdl" />
     <Resource Include="Fonts\webhostinghub-glyphs.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -179,31 +196,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\NetworkService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\NetworkService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\NetworkService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\NetworkService\item3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\NetworkService\item31.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\NetworkService\item32.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\NetworkService\QuestService1.wsdl" />
-    <None Include="Service References\NetworkService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Media\phone.png" />
@@ -232,10 +224,30 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\NetworkService\item1.disco" />
+    <Resource Include="Media\lock.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\lock.png" />
+    <WCFMetadataStorage Include="Service References\NetworkService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\item.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NetworkService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Media\background.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

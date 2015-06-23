@@ -75,11 +75,15 @@
     <Compile Include="Phone\INetworkChatCodec.cs" />
     <Compile Include="Phone\Common.cs" />
     <Compile Include="Phone\Data.cs" />
+    <Compile Include="Phone\LoopStream.cs" />
     <Compile Include="Phone\PhoneEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestState.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Sensor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ring.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

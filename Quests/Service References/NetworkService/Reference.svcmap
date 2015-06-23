@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="cf820a0c-8508-4dae-a491-cfb4fa773aef" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="81bdf669-3383-4b31-aa45-8efd8efd9630" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,11 +22,11 @@
     <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/QuestServer/QuestService/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="item1.disco" MetadataType="Disco" ID="ec65cbde-c594-469d-b5de-f928a3d9e992" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?disco" />
-    <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="4fbc3193-1980-4ff0-b312-f034b0bc3720" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd2" />
-    <MetadataFile FileName="item31.xsd" MetadataType="Schema" ID="df6782c8-f996-4757-a43b-1344a960652b" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd1" />
-    <MetadataFile FileName="QuestService1.wsdl" MetadataType="Wsdl" ID="a26050ec-367f-49ac-b201-c7cba27ea1dc" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?wsdl" />
-    <MetadataFile FileName="item32.xsd" MetadataType="Schema" ID="2f6d54cc-ec5f-4c86-8042-5af1d0f523e5" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd0" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="019ef284-5c2c-4e83-b993-aafc555692d6" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?disco" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="ad86b119-5eab-4d5f-bb57-4f61f7090abe" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd2" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="1fc81eca-54cf-4082-80a4-c287354d6f2e" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd1" />
+    <MetadataFile FileName="QuestService.wsdl" MetadataType="Wsdl" ID="08768245-d32c-48ce-a6b8-c54c9c5ceef7" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?wsdl" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="6bfa754e-e39a-4046-98e2-61f4b8e3a1ca" SourceId="1" SourceUrl="http://192.168.1.200:8733/Design_Time_Addresses/QuestServer/QuestService/?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

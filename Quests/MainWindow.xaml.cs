@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Common.Phone;
+using NAudio.Wave;
 using QuestClient;
 
 namespace Quests
@@ -17,6 +21,8 @@ namespace Quests
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly WaveOut _backgroundPlayer = new WaveOut();
+        private readonly MediaFoundationReader _mp3Track;
         private PhoneEngine _phone;
         private readonly DispatcherTimer _dispatcherTimer;
         private Stages Stages { get; set; }
@@ -29,7 +35,7 @@ namespace Quests
         {
             InitializeComponent();
             TotalElapsed.Visibility = Visibility.Hidden;
-            
+            Closing += OnClosing;
             var hbInterval = int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]);
             _app = (App) Application.Current;
             _dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 1) };
@@ -48,7 +54,13 @@ namespace Quests
             Stages.QuestStarted += StagesOnQuestStarted;
             Stages.QuestStopped += StagesOnQuestStopped;
             Stages.QuestCompleted += StagesOnQuestCompleted;
-            
+
+            if (File.Exists(@"Media\background.mp3"))
+            {
+                _mp3Track = new MediaFoundationReader(@"Media\background.mp3");
+                _backgroundPlayer.Init(_mp3Track);
+            }
+
             _networkWatcher.Start();
 
             if (!_app.Connected)
@@ -57,20 +69,25 @@ namespace Quests
             
         }
 
+        private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+                _backgroundPlayer.Dispose();
+        }
+
         private void PrepareWindow(int keysCount)
         {
             
-            foreach (var keyButton in _allKeyButtons)
-            {
-                keyButton.ButtonControl.IsEnabled = false;
-                keyButton.Label = string.Empty;
-                keyButton.ImageControl.Source = (ImageSource)FindResource("LockImage");
-                keyButton.Visibility =
-                    Array.IndexOf(_allKeyButtons, keyButton) < keysCount 
-                    ? Visibility.Visible : Visibility.Hidden;
-            }
             _app.Dispatcher.Invoke(() =>
             {
+                foreach (var keyButton in _allKeyButtons)
+                {
+                    keyButton.ButtonControl.IsEnabled = false;
+                    keyButton.Label = string.Empty;
+                    keyButton.ImageControl.Source = (ImageSource)FindResource("LockImage");
+                    keyButton.Visibility =
+                        Array.IndexOf(_allKeyButtons, keyButton) < keysCount
+                        ? Visibility.Visible : Visibility.Hidden;
+                }
                 TotalElapsed.Visibility = Visibility.Hidden;
             });
             
@@ -81,6 +98,11 @@ namespace Quests
             _app.Dispatcher.Invoke(() =>
             {
                 _dispatcherTimer.Stop();
+                if (_mp3Track != null)
+                {
+                    _backgroundPlayer.Stop();
+                }
+
                 TotalElapsed.Content = "Игровое время вышло";
                 /*CurrentElapsed.Visibility = Visibility.Hidden;*/
                 _app.QuestServiceClient.QuestCompleted(_app.QuestId);
@@ -147,6 +169,10 @@ namespace Quests
         private void StagesOnQuestStopped(object sender, QuestStoppedHandlerArgs args)
         {
             _dispatcherTimer.Stop();
+            if (_mp3Track != null)
+            {
+                _backgroundPlayer.Stop();
+            }
 
             _app.Dispatcher.Invoke(() =>
             {
@@ -167,23 +193,33 @@ namespace Quests
 
         private void StagesOnQuestStarted(object sender, QuestStartedHandlerArgs args)
         {
-            _currentKeyButtons.Clear();
-            var stagesCount = Stages.Count();
-            //var locks = TopGrid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
-            for (var i = 0; i < stagesCount; i++)
+            _app.Dispatcher.InvokeAsync(() =>
             {
-                _currentKeyButtons.Add(Stages[i], _allKeyButtons[i]);
-                _allKeyButtons[i].ButtonControl.IsEnabled = false;
-                _allKeyButtons[i].Label = String.Empty;
-                _allKeyButtons[i].ImageControl.Source = (ImageSource)FindResource("LockImage");
-            }
-            
-            TotalElapsed.Visibility = Visibility.Hidden;
-            /*foreach (var v in _currentKeyButtons.Values)
+                _currentKeyButtons.Clear();
+                var stagesCount = Stages.Count();
+                //var locks = TopGrid.Children.OfType<Button>().Where(x => x.Name.Contains("Key")).ToArray();
+                for (var i = 0; i < stagesCount; i++)
+                {
+                    _currentKeyButtons.Add(Stages[i], _allKeyButtons[i]);
+                    _allKeyButtons[i].ButtonControl.IsEnabled = false;
+                    _allKeyButtons[i].Label = String.Empty;
+                    _allKeyButtons[i].ImageControl.Source = (ImageSource) FindResource("LockImage");
+                }
+
+                TotalElapsed.Visibility = Visibility.Hidden;
+                /*foreach (var v in _currentKeyButtons.Values)
             {
                v.IsEnabled = false;
             }*/
-            CallButton.IsEnabled = true;
+                CallButton.IsEnabled = true;
+
+
+                if (_mp3Track != null)
+                {
+                    _mp3Track.CurrentTime = TimeSpan.Zero;
+                    _backgroundPlayer.Play();
+                }
+            });
             _dispatcherTimer.Start();
         }
 
@@ -212,7 +248,7 @@ namespace Quests
 
         private void CallButtonOnClick(object sender, RoutedEventArgs e)
         {
-            var phoneWindow = new PhoneWindow() { Owner = this };
+            var phoneWindow = new PhoneWindow(_backgroundPlayer) { Owner = this };
             phoneWindow.ShowDialog();
         }
     }

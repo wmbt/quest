@@ -1,6 +1,9 @@
-﻿using System.Configuration;
+﻿using System;
+using System.ComponentModel;
+using System.Configuration;
 using System.Windows;
 using Common.Phone;
+using NAudio.Wave;
 
 namespace QuestClient
 {
@@ -11,12 +14,15 @@ namespace QuestClient
     {
         private readonly App _app;
         private readonly PhoneEngine _phone;
-        public PhoneWindow()
+        private WaveOut _backgroundWaveOut;
+
+        public PhoneWindow(WaveOut backgroundWaveOut)
         {
+            _backgroundWaveOut = backgroundWaveOut;
             var serverIp = ConfigurationManager.AppSettings["ServerIP"];
             var sendPort = int.Parse(ConfigurationManager.AppSettings["SendToCommandPort"]);
             var listenPort = int.Parse(ConfigurationManager.AppSettings["ListenCommandPort"]);
-            
+            Closing += OnClosing;
             InitializeComponent();
             _app = (App)Application.Current;
             _phone = new PhoneEngine(_app.QuestId, false, sendPort, listenPort);
@@ -25,7 +31,13 @@ namespace QuestClient
             _phone.OnCallBegin += PhoneOnOnCallBegin;
             Closing += (sender, args) => _phone.Dispose();
             _phone.BeginCall(serverIp);
+            _backgroundWaveOut.Volume = 0;
 
+        }
+
+        private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            _backgroundWaveOut.Volume = 1;
         }
 
         private void PhoneOnOnCallBegin(object sender, CallBeginEventHandlerArgs args)

@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
 using QuestClient;
+using QuestService;
 
 namespace QuestClient.NetworkService
 {

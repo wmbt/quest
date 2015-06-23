@@ -6,7 +6,7 @@
         Title="Квест" 
         WindowStyle="ThreeDBorderWindow" 
         WindowState="Maximized" 
-        ResizeMode="CanResize" Topmost="True" Margin="0" Height="750" MinHeight="750" Background="White" Width="1200" MinWidth="1200">
+        ResizeMode="CanResize" Topmost="False" Margin="0" Height="750" MinHeight="750" Background="White" Width="1200" MinWidth="1200">
     <StackPanel>
         <Grid HorizontalAlignment="Center" Margin="0,70,0,0" VerticalAlignment="Center" x:Name="TopGrid">
             <Grid.RowDefinitions>

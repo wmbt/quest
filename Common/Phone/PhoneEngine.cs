@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using NAudio.Wave;
@@ -39,10 +40,19 @@ namespace Common.Phone
         private readonly int _listenPort;
         private readonly int _sendToPort;
         private bool _stopListening;
+        private readonly WaveOut _ringer;
+        private readonly Mp3FileReader _mp3FileReader;
 
 
         public PhoneEngine(int questId, bool disableListening, int sendToPort, int listenPort)
         {
+            var assembly = Assembly.GetExecutingAssembly();
+            var ring = assembly.GetManifestResourceStream("Common.ring.mp3");
+            _mp3FileReader = new Mp3FileReader(ring);
+            var loop = new LoopStream(_mp3FileReader);
+            _ringer = new WaveOut();
+            _ringer.Init(loop);
+            
             _listenPort = listenPort;
             _sendToPort = sendToPort;
             _questId = questId;
@@ -81,6 +91,7 @@ namespace Common.Phone
 
         public void AcceptCall()
         {
+            _ringer.Stop();
             SendMessage(Command.OK);
             Connect((IPEndPoint)_otherSideEndPoint);
         }
@@ -142,6 +153,8 @@ namespace Common.Phone
                         if (_connected == false && _busy == false)
                         {
                             _busy = true;
+                            _mp3FileReader.CurrentTime = TimeSpan.Zero;
+                            _ringer.Play();
                             OnOnCallRecieved(new CallRecivedEventHandlerArgs(msgRecived.strName));
                         }
                         else
@@ -155,6 +168,7 @@ namespace Common.Phone
                 case Command.OK:
                     {
                         //Start a call.
+                        _ringer.Stop();
                         OnOnCallBegin(new CallBeginEventHandlerArgs());
                         Connect((IPEndPoint)_otherSideEndPoint);
                         break;
@@ -171,6 +185,7 @@ namespace Common.Phone
 
                 case Command.Bye:
                     {
+                        _ringer.Stop();
                         Disconnect((IPEndPoint)_otherSideEndPoint);
                         OnOnCallDropped(new CallDroppedEventHandlerArgs(true, false));
                         _busy = false;
@@ -265,6 +280,7 @@ namespace Common.Phone
         {
             try
             {
+                _ringer.Stop();
                 var otherSideEndPoint = (IPEndPoint)_otherSideEndPoint;
                 //Send a Bye message to the user to end the call.
                 SendMessage(Command.Bye);
@@ -311,6 +327,8 @@ namespace Common.Phone
                 _player.Dispose();
             if (_waveIn != null)
                 _waveIn.Dispose();
+
+            _ringer.Dispose();
         }
     }
 
