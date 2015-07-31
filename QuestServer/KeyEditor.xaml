@@ -1,7 +1,7 @@
 ﻿<Window x:Class="QuestServer.KeyEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Редактирование ответа" Height="725" Width="530" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ShowInTaskbar="False">
+        Title="Редактирование ответа" Height="520" Width="530" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" ShowInTaskbar="False">
     <StackPanel VerticalAlignment="Top" Margin="10,10,10,0">
         <Label Content="Описание:" HorizontalAlignment="Left" Margin="-3,0,0,0" VerticalAlignment="Top" Width="70" Height="24" VerticalContentAlignment="Center" Padding="5,4,5,5"/>
         <TextBox x:Name="DescriptionTbx" Height="24" Margin="0,-3,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Padding="1,2,1,1"/>
@@ -12,8 +12,8 @@
             </TextBox>
             <Label Content="минут" HorizontalAlignment="Left" Margin="6,0,0,0" VerticalAlignment="Top" Height="24" Padding="5,3,5,5"/>
         </StackPanel>
-        <Label Content="Изображение с ответом:" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Height="24" Padding="5,3,5,5"/>
-        <Image x:Name="KeyImage" Width="500" Height="500"/>
+        <Label Content="Изображение с ответом:" HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top" Height="24" Padding="5,3,5,5"/>
+        <Image x:Name="KeyImage" Width="480" Height="300"/>
         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,10,0,0">
             <Button Content="Отмена" Click="ButtonCancelOnClick" HorizontalAlignment="Left" Margin="0,0,10,0" VerticalAlignment="Top" Width="75" Height="24"/>
             <Button Content="Сохранить" Click="ButtonSaveOnClick" HorizontalAlignment="Left" Margin="0,0,10,0" VerticalAlignment="Top" Width="75" Height="24"/>

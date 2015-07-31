@@ -6,10 +6,10 @@
              mc:Ignorable="d"
              d:DesignHeight="150" d:DesignWidth="150">
     <Grid>
-        <Button x:Name="KeyBtn" Height="150" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="15">
+        <Button x:Name="KeyBtn" Height="170" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="15">
             <StackPanel>
-                <Image x:Name="ButtonImage" Width="80" Height="80" Source="{StaticResource LockImage}"/>
-                <Label x:Name="Time" Content="" HorizontalAlignment="Center" FontSize="16pt" Height="40" />
+                <Image x:Name="ButtonImage" Width="90" Height="90" Source="{StaticResource LockImage}"/>
+                <Label x:Name="Time" Content="" HorizontalAlignment="Center" FontSize="18pt" Height="40" />
             </StackPanel>
         </Button>
     </Grid>

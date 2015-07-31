@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
+using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using NAudio.Wave;
-using Key = Common.Key;
+using Common;
 
 namespace QuestClient
 {
@@ -22,6 +13,7 @@ namespace QuestClient
     /// </summary>
     public partial class KeyWindow : Window
     {
+        private readonly Timer _closeTimer;
         public KeyWindow(Key key)
         {
             InitializeComponent();
@@ -32,9 +24,25 @@ namespace QuestClient
             {
                 KeyImage.Source = GetBitmapImage(key.Image);
             }
+            var interval = int.Parse(ConfigurationManager.AppSettings["KeyWindowInterval"]);
 
-            
+            _closeTimer = new Timer(1000*interval);
+            _closeTimer.Elapsed += CloseTimerOnElapsed;
+            Closing += OnClosing;
+            _closeTimer.Start();
         }
+
+        private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
+        {
+            _closeTimer.Dispose();
+        }
+
+        private void CloseTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
+        {
+            _closeTimer.Stop();
+            Dispatcher.Invoke(Close);
+        }
+
         public BitmapImage GetBitmapImage(byte[] imageBytes)
         {
             var stream = new MemoryStream(imageBytes);

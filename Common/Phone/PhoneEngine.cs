@@ -75,7 +75,7 @@ namespace Common.Phone
                 DeviceNumber = 0,
                 WaveFormat = _codec.RecordFormat
             };
-            _waveIn.DataAvailable += RecorderOnDataAvailable;
+            //_waveIn.DataAvailable += RecorderOnDataAvailable;
 
             _player = new WaveOut() { DesiredLatency = 100};
             _waveProvider = new BufferedWaveProvider(_codec.RecordFormat);
@@ -217,6 +217,7 @@ namespace Common.Phone
             _udpSender.Connect(clientEndPoint.Address, VoicePort);
 
             _player.Play();
+            _waveIn.DataAvailable += RecorderOnDataAvailable;
             _waveIn.StartRecording();
 
             _connected = true;

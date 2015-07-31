@@ -15,11 +15,11 @@ namespace QuestClient
     {
         private readonly App _app;
         private readonly PhoneEngine _phone;
-        private readonly VolumeSampleProvider _backgroundWaveOut;
+        private readonly VolumeSampleProvider _backgroundVolume;
 
         public PhoneWindow(VolumeSampleProvider volumeSampleProvider)
         {
-            _backgroundWaveOut = volumeSampleProvider;
+            _backgroundVolume = volumeSampleProvider;
             var serverIp = ConfigurationManager.AppSettings["ServerIP"];
             var sendPort = int.Parse(ConfigurationManager.AppSettings["SendToCommandPort"]);
             var listenPort = int.Parse(ConfigurationManager.AppSettings["ListenCommandPort"]);
@@ -32,13 +32,16 @@ namespace QuestClient
             _phone.OnCallBegin += PhoneOnOnCallBegin;
             Closing += (sender, args) => _phone.Dispose();
             _phone.BeginCall(serverIp);
-            _backgroundWaveOut.Volume = 0;
+            
+            if (_backgroundVolume != null)
+                _backgroundVolume.Volume = 0;
 
         }
 
         private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
-            _backgroundWaveOut.Volume = 1;
+            if (_backgroundVolume != null)
+                _backgroundVolume.Volume = 1;
         }
 
         private void PhoneOnOnCallBegin(object sender, CallBeginEventHandlerArgs args)

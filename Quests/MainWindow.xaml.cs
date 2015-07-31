@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +14,7 @@ using Common.Phone;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using QuestClient;
+using Timer = System.Timers.Timer;
 
 namespace Quests
 {
@@ -61,6 +62,7 @@ namespace Quests
             {
                 _mp3Track = new MediaFoundationReader(@"Media\background.mp3");
                 _mp3Volume = new VolumeSampleProvider(_mp3Track.ToSampleProvider());
+                _backgroundPlayer.DesiredLatency = 1000;
                 _backgroundPlayer.Init(_mp3Volume);
             }
 
@@ -221,7 +223,9 @@ namespace Quests
                 {
                     _mp3Track.CurrentTime = TimeSpan.Zero;
                     _backgroundPlayer.Play();
-                }
+                                            
+                }    
+                
             });
             _dispatcherTimer.Start();
         }
@@ -245,8 +249,12 @@ namespace Quests
         {
             var stage = _currentKeyButtons.SingleOrDefault(x => Equals(x.Value.ButtonControl, (Button) sender)).Key;
             
-            var keyViewer = new KeyWindow(stage.Key){ Owner = this};
-            keyViewer.ShowDialog();
+            Dispatcher.InvokeAsync(() =>
+            {
+                var keyViewer = new KeyWindow(stage.Key) { Owner = this };
+                keyViewer.ShowDialog();    
+            });
+            
         }
 
         private void CallButtonOnClick(object sender, RoutedEventArgs e)

@@ -5,10 +5,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Quests.MainWindow"
         Title="Квест" 
         WindowStyle="ThreeDBorderWindow" 
-        WindowState="Maximized" 
-        ResizeMode="CanResize" Topmost="False" Margin="0" Height="750" MinHeight="750" Background="White" Width="1200" MinWidth="1200">
+        WindowState="Maximized"
+        ResizeMode="NoResize" Topmost="True" Margin="0" Height="750" MinHeight="750" Background="White" Width="1200" MinWidth="1200">
     <StackPanel>
-        <Grid HorizontalAlignment="Center" Margin="0,70,0,0" VerticalAlignment="Center" x:Name="TopGrid">
+        <Grid HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Center" x:Name="TopGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -33,11 +33,11 @@
         </Grid>
         <StackPanel Orientation="Horizontal" Margin="0,60,0,0" HorizontalAlignment="Center">
             <StackPanel>
-                <Label Visibility="Visible" x:Name="TotalElapsed"  Content="До окончания осталось" FontSize="36" FontWeight="Bold" Margin="0,43,0,0" Width="676"/>
+                <Label Visibility="Visible" x:Name="TotalElapsed"  Content="До окончания осталось" FontSize="36" FontWeight="Bold" Margin="0,43,0,0" Width="660"/>
             </StackPanel>
             <Button IsEnabled="False" x:Name="CallButton" Padding="15" Content="{StaticResource PhoneImage2}" 
 				Grid.Column="1" HorizontalAlignment="Right" Margin="0" Grid.Row="0" VerticalAlignment="Top" 
-				Width="150" Height="150" Click="CallButtonOnClick" BorderThickness="1"/>
+				Width="140" Height="140" Click="CallButtonOnClick" BorderThickness="1"/>
         </StackPanel>
     </StackPanel>
 </Window>
