@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
@@ -11,9 +12,9 @@ namespace QuestClient
     public class Stage
     {
         public Key Key { get; private set; }
-        public bool SensorTriggered { get; internal set; }
+        /*public bool SensorTriggered { get; internal set; }*/
         /*public bool KeyViewed { get; internal set; }*/
-        public bool TimerFired { get; internal set; }
+        /*public bool TimerFired { get; internal set; }*/
         public Stage(Key key)
         {
             Key = key;
@@ -22,8 +23,8 @@ namespace QuestClient
 
     public class Stages : IEnumerable<Stage>
     {
-        public event KeyPublishedHandler KeyPublished;
-        public event StageCompletedHandler StageCompleted;
+        /*public event KeyPublishedHandler KeyPublished;*/
+        /*public event StageCompletedHandler StageCompleted;*/
         public event QuestCompletedHandler QuestCompleted;
         public event QuestStartedHandler QuestStarted;
         public event QuestStoppedHandler QuestStopped;
@@ -32,7 +33,7 @@ namespace QuestClient
         private readonly List<Stage> _stages = new List<Stage>();
         private readonly Timer _timer = new Timer();
         public Stopwatch TotalTime { get; private set; }
-        public Stopwatch CurrentTime { get; private set; }
+        /*public Stopwatch CurrentTime { get; private set; }*/
         public Stage CurrentStage { get; private set;}
         public TimeSpan QuestDuration { get; private set; }
 
@@ -44,12 +45,14 @@ namespace QuestClient
 
         public Stages()
         {
+            var questDuration = int.Parse(ConfigurationManager.AppSettings["QuestDurationMin"]);
+            
             _timer.Elapsed += TimerOnElapsed;
             _timer.AutoReset = false;
             QuestRunning = false;
             TotalTime = new Stopwatch();
-            CurrentTime = new Stopwatch();
-            QuestDuration = new TimeSpan();
+            /*CurrentTime = new Stopwatch();*/
+            QuestDuration = new TimeSpan(0, questDuration, 0);
         }
 
         public Stages(IEnumerable<Key> keys)
@@ -57,28 +60,39 @@ namespace QuestClient
         {
             foreach (var key in keys)
                 _stages.Add(new Stage(key));
-            foreach (var stage in _stages)
+            
+            /*foreach (var stage in _stages)
             {
                 QuestDuration += stage.Key.TimeOffset;
-            }
+            }*/
+        }
+
+        /*public void SetKeyViewed(int keyId)
+        {
+            
+        }*/
+
+        public void SetCurrentKey(int keyId)
+        {
+            CurrentStage = this.Single(x => x.Key.KeyId == keyId);
         }
 
         public void AssignKeys(IEnumerable<Key> keys)
         {
-            QuestDuration = new TimeSpan();
+            //QuestDuration = new TimeSpan();
             _stages.Clear();
             foreach (var key in keys)
                 _stages.Add(new Stage(key));
-            foreach (var stage in _stages)
+            /*foreach (var stage in _stages)
             {
                 QuestDuration += stage.Key.TimeOffset;
-            }
+            }*/
         }
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            CurrentStage.TimerFired = true;
-            OnKeyPublished(new KeyPublishedHandlerArgs(CurrentStage));
+            //CurrentStage.TimerFired = true;
+            /*OnKeyPublished(new KeyPublishedHandlerArgs(CurrentStage));
 
             CurrentTime.Reset();
             _timer.Stop();
@@ -92,10 +106,10 @@ namespace QuestClient
                 _timer.Start();
             }
             else
-            {
+            {*/
                 ResetWatch();
                 OnQuestCompleted(new QuestCompletedHandlerArgs());
-            }
+            //}
         }
 
 
@@ -137,12 +151,13 @@ namespace QuestClient
         {
             ResetWatch();
             CurrentStage = _stages.First();
-            _timer.Interval = CurrentStage.Key.TimeOffset.TotalMilliseconds;
+            //_timer.Interval = CurrentStage.Key.TimeOffset.TotalMilliseconds;
+            _timer.Interval = QuestDuration.TotalMilliseconds;
             OnQuestStarted(new QuestStartedHandlerArgs());
             QuestRunning = true;
             _timer.Start();
             TotalTime.Start();
-            CurrentTime.Start();
+            //CurrentTime.Start();
         }
 
         public void StopWatch()
@@ -155,22 +170,22 @@ namespace QuestClient
         private void ResetWatch()
         {
             TotalTime.Reset();
-            CurrentTime.Reset();
+            //CurrentTime.Reset();
             _timer.Stop();
-            _stages.ForEach(x => { x.TimerFired = x.SensorTriggered = false; });
+            //_stages.ForEach(x => { x.TimerFired = x.SensorTriggered = false; });
         }
         
-        protected virtual void OnKeyPublished(KeyPublishedHandlerArgs args)
+        /*protected virtual void OnKeyPublished(KeyPublishedHandlerArgs args)
         {
             var handler = KeyPublished;
             if (handler != null) handler(this, args);
-        }
+        }*/
 
-        protected virtual void OnStageCompleted(StageCompletedHandlerArgs args)
+       /* protected virtual void OnStageCompleted(StageCompletedHandlerArgs args)
         {
             var handler = StageCompleted;
             if (handler != null) handler(this, args);
-        }
+        }*/
 
         protected virtual void OnQuestCompleted(QuestCompletedHandlerArgs args)
         {

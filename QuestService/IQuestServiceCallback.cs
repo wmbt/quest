@@ -5,11 +5,14 @@ namespace QuestService
 {
     public interface IQuestServiceCallback
     {
-        [OperationContract(IsOneWay = true)]
-        void SensorTriggered(int sensorId);
+        /*[OperationContract(IsOneWay = true)]
+        void SensorTriggered(int sensorId);*/
 
         [OperationContract(IsOneWay = true)]
-        void StartQuest(Key[] keys);
+        void SetCurrentKey(int keyId);
+        
+        [OperationContract]
+        int StartQuest(Key[] keys);
 
         [OperationContract(IsOneWay = true)]
         void StopQuest();

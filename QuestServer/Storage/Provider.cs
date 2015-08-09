@@ -44,6 +44,7 @@ namespace QuestServer.Storage
             var qRow = _dataSet.Quests.FindById(questId);
             var keys = qRow.GetKeysRows().AsEnumerable().Select(x => new Key
             {
+                KeyId = x.Id,
                 Description = x.Description,
                 QuestId = qRow.Id,
                 TimeOffset = x.TimeOffset,

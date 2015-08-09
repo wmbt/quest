@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    public class QuestState
+    public enum QuestState
     {
+        Run,
+        Done
     }
 }

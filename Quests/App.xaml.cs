@@ -4,14 +4,13 @@ using System.Diagnostics;
 using System.ServiceModel;
 using System.Windows;
 using QuestClient.NetworkService;
-using Quests;
 
 namespace QuestClient
 {
     /// <summary>
     /// Логика взаимодействия для App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         private QuestServiceCallback _callback;
         public QuestServiceClient QuestServiceClient { get; private set; }
@@ -76,7 +75,7 @@ namespace QuestClient
             {
                 return QuestServiceClient.Ping(QuestId);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 QuestServiceClient.Abort();
                 return false;

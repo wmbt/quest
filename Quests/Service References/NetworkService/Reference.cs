@@ -32,16 +32,22 @@ namespace QuestClient.NetworkService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/Ping", ReplyAction="http://tempuri.org/IQuestService/PingResponse")]
         System.Threading.Tasks.Task<bool> PingAsync(int questId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/KeyViewed")]
+        void KeyViewed(int questId, int keyId);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/KeyViewed")]
+        System.Threading.Tasks.Task KeyViewedAsync(int questId, int keyId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IQuestServiceCallback {
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/SensorTriggered")]
-        void SensorTriggered(int sensorId);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/SetCurrentKey")]
+        void SetCurrentKey(int keyId);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/StartQuest")]
-        void StartQuest(Common.Key[] keys);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/StartQuest", ReplyAction="http://tempuri.org/IQuestService/StartQuestResponse")]
+        int StartQuest(Common.Key[] keys);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/StopQuest")]
         void StopQuest();
@@ -100,6 +106,14 @@ namespace QuestClient.NetworkService {
         
         public System.Threading.Tasks.Task<bool> PingAsync(int questId) {
             return base.Channel.PingAsync(questId);
+        }
+        
+        public void KeyViewed(int questId, int keyId) {
+            base.Channel.KeyViewed(questId, keyId);
+        }
+        
+        public System.Threading.Tasks.Task KeyViewedAsync(int questId, int keyId) {
+            return base.Channel.KeyViewedAsync(questId, keyId);
         }
     }
 }

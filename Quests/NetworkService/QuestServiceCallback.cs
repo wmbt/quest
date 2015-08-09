@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Configuration;
+using System.Linq;
 using Common;
-using QuestClient;
-using QuestService;
 
 namespace QuestClient.NetworkService
 {
@@ -20,14 +20,21 @@ namespace QuestClient.NetworkService
             //Stages.SensorTriggered(sensorId);
         }
 
-        public void StartQuest(Key[] keys)
+        public int StartQuest(Key[] keys)
         {
             Stages.AssignKeys(keys);
             _app.Dispatcher.Invoke(() =>
             {
                 Stages.StartWatch();
             });
-            
+            var questDuration = int.Parse(ConfigurationManager.AppSettings["QuestDurationMin"]);
+            return questDuration;
+
+        }
+
+        public void SetCurrentKey(int keyId)
+        {
+            Stages.SetCurrentKey(keyId);
         }
 
         public void StopQuest()

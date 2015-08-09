@@ -11,14 +11,19 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Image" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="KeyId" type="xs:int" />
       <xs:element minOccurs="0" name="QuestId" type="xs:int" />
       <xs:element minOccurs="0" name="SensorId" type="xs:int" />
       <xs:element minOccurs="0" name="TimeOffset" type="ser:duration" />
+      <xs:element minOccurs="0" name="Viewed" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Key" nillable="true" type="tns:Key" />
-  <xs:complexType name="QuestState">
-    <xs:sequence />
-  </xs:complexType>
+  <xs:simpleType name="QuestState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Run" />
+      <xs:enumeration value="Done" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:element name="QuestState" nillable="true" type="tns:QuestState" />
 </xs:schema>

@@ -35,11 +35,17 @@
   <wsdl:message name="IQuestService_Ping_OutputMessage">
     <wsdl:part name="parameters" element="tns:PingResponse" />
   </wsdl:message>
-  <wsdl:message name="IQuestService_SensorTriggered_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:SensorTriggered" />
+  <wsdl:message name="IQuestService_KeyViewed_InputMessage">
+    <wsdl:part name="parameters" element="tns:KeyViewed" />
+  </wsdl:message>
+  <wsdl:message name="IQuestService_SetCurrentKey_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SetCurrentKey" />
   </wsdl:message>
   <wsdl:message name="IQuestService_StartQuest_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:StartQuest" />
+  </wsdl:message>
+  <wsdl:message name="IQuestService_StartQuest_InputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:StartQuestResponse" />
   </wsdl:message>
   <wsdl:message name="IQuestService_StopQuest_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:StopQuest" />
@@ -62,11 +68,15 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IQuestService/Ping" message="tns:IQuestService_Ping_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IQuestService/PingResponse" message="tns:IQuestService_Ping_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SensorTriggered">
-      <wsdl:output wsaw:Action="http://tempuri.org/IQuestService/SensorTriggered" message="tns:IQuestService_SensorTriggered_OutputCallbackMessage" />
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="KeyViewed">
+      <wsdl:input wsaw:Action="http://tempuri.org/IQuestService/KeyViewed" message="tns:IQuestService_KeyViewed_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SetCurrentKey">
+      <wsdl:output wsaw:Action="http://tempuri.org/IQuestService/SetCurrentKey" message="tns:IQuestService_SetCurrentKey_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="StartQuest">
       <wsdl:output wsaw:Action="http://tempuri.org/IQuestService/StartQuest" message="tns:IQuestService_StartQuest_OutputCallbackMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IQuestService/StartQuestResponse" message="tns:IQuestService_StartQuest_InputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="StopQuest">
       <wsdl:output wsaw:Action="http://tempuri.org/IQuestService/StopQuest" message="tns:IQuestService_StopQuest_OutputCallbackMessage" />
@@ -103,14 +113,23 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="SensorTriggered">
-      <soap12:operation soapAction="http://tempuri.org/IQuestService/SensorTriggered" style="document" />
+    <wsdl:operation name="KeyViewed">
+      <soap12:operation soapAction="http://tempuri.org/IQuestService/KeyViewed" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="SetCurrentKey">
+      <soap12:operation soapAction="http://tempuri.org/IQuestService/SetCurrentKey" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="StartQuest">
       <soap12:operation soapAction="http://tempuri.org/IQuestService/StartQuest" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

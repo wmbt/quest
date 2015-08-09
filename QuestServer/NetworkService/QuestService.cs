@@ -52,6 +52,15 @@ namespace QuestServer.NetworkService
             });
         }
 
+        public void KeyViewed(int questId, int keyId)
+        {
+            _app.Dispatcher.Invoke(() =>
+            {
+                var client = Clients.Single(x => x.Quest.Id == questId);
+                client.SetKeyViewed(keyId);
+            });
+        }
+
         private void UnregisterClient(IContextChannel channel)
         {
             _app.Dispatcher.Invoke(() =>

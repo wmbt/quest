@@ -21,5 +21,7 @@ namespace QuestService
         [OperationContract]
         bool Ping(int questId);
 
+        [OperationContract(IsOneWay = true)]
+        void KeyViewed(int questId, int keyId);
     }
 }

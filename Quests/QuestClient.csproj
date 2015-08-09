@@ -198,15 +198,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\phone.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Media\key.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Media\phone2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5 %28x86 и x64%29</ProductName>
@@ -222,9 +213,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Media\lock.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\NetworkService\" />
@@ -248,6 +236,10 @@
     <None Include="Media\background.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\lock-button.png" />
+    <Resource Include="Media\phone-button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

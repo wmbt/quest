@@ -1,14 +1,15 @@
 ﻿<Application x:Class="QuestClient.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:quests="clr-namespace:Quests"
              xmlns:questClient="clr-namespace:QuestClient"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <BitmapImage x:Key="KeyImage" UriSource="pack://application:,,,/Media/Key.png" />
-        <BitmapImage x:Key="LockImage" UriSource="pack://application:,,,/Media/Lock.png" />
+        <!--<BitmapImage x:Key="KeyImage" UriSource="pack://application:,,,/Media/Key.png" />-->
+        <!--<BitmapImage x:Key="LockImage" UriSource="pack://application:,,,/Media/Lock.png" />-->
         <!--<Image x:Key="KeyImage" Source="pack://application:,,,/Media/Key.png"/>-->
-        <Image x:Key="PhoneImage" Source="pack://application:,,,/Media/phone.png"/>
-        <Image x:Key="PhoneImage2" Source="pack://application:,,,/Media/phone2.png"/>
+        <!--<Image x:Key="PhoneImage" Source="pack://application:,,,/Media/phone.png"/>
+        <Image x:Key="PhoneImage2" Source="pack://application:,,,/Media/phone2.png"/>-->
+        <Image x:Key="PhoneImage" Source="pack://application:,,,/Media/phone-button.png"/>
+        <Image x:Key="LockImage" Source="pack://application:,,,/Media/lock-button.png"/>
     </Application.Resources>
 </Application>

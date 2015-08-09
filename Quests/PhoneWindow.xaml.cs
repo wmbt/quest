@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration;
+using System.Globalization;
 using System.Windows;
 using Common.Phone;
 using NAudio.Wave;
@@ -41,7 +42,7 @@ namespace QuestClient
         private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
             if (_backgroundVolume != null)
-                _backgroundVolume.Volume = 1;
+                _backgroundVolume.Volume = float.Parse(ConfigurationManager.AppSettings["BackgroundMuiscVolume"], CultureInfo.InvariantCulture);
         }
 
         private void PhoneOnOnCallBegin(object sender, CallBeginEventHandlerArgs args)

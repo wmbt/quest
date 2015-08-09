@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Вызов оператора" Height="280" Width="270" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True" WindowStartupLocation="CenterOwner" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
     <StackPanel>
-        <Image Width="150" Height="150" Margin="0,20" Source="Media/phone2.png" />
+        <Image Width="150" Height="150" Margin="0,20" Source="Media/phone-button.png" />
         <Button x:Name="CallButton" Content="Отменить вызов" Height="40" Width="160" Click="CallButtonOnClick"/>
     </StackPanel>
 </Window>

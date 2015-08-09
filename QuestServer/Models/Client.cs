@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Windows;
 using System.Windows.Input;
+using Common;
 using QuestServer.Annotations;
 using QuestService;
 
@@ -17,10 +18,11 @@ namespace QuestServer.Models
         public Command StartCommand { get; set; }
         public Command StopCommand { get; set; }
         public string State { get; set; }
-        private DateTime _startTime { get; set; }
+        //private DateTime _startTime { get; set; }
         private DateTime _endTime { get; set; }
         //private TimeSpan _duration { get; set; }
-        private bool _inProcess { get; set; }
+        public bool InProcess { get; set; }
+        //public QuestState State { get; set; }
 
         private readonly IQuestServiceCallback _clientCallback;
         public IContextChannel Cannel { get; private set; }
@@ -43,56 +45,76 @@ namespace QuestServer.Models
             StopCommand.Enabled = true;
             var app = (App) Application.Current;
             var q = app.Provider.GetQuest(Quest.Id);
-            var duration = new TimeSpan();
-            duration = q.Keys.Aggregate(duration, (current, key) => current + key.TimeOffset);
+            //var duration = new TimeSpan();
+            //duration = q.Keys.Aggregate(duration, (current, key) => current + key.TimeOffset);
             
-            _startTime = DateTime.Now;
-            _endTime = _startTime + duration;
-            Quest.Keys = q.Keys;
-            _clientCallback.StartQuest(Quest.Keys);
-            _inProcess = true;
+            //_startTime = DateTime.Now;
+            var duration = _clientCallback.StartQuest(q.Keys);
+            _endTime = DateTime.Now + new TimeSpan(0, duration, 0);
+            //Quest.Keys = q.Keys;
+            
+            InProcess = true;
+            OnPropertyChanged("InProcess");
 
 
             /*Room.AllowListening = true;
             Room.EnableSensors();*/
         }
 
+        public void SetCurrentKey(int keyId)
+        {
+            _clientCallback.SetCurrentKey(keyId);
+        }
+
         public void RefreshState()
         {
-            if (!_inProcess)
+            if (!InProcess)
                 State = "";
             else
             {
-                State = "До завершения осталось " + ((_endTime - _startTime).ToString("hh\\:mm"));
+                State = /*"До завершения осталось " + */((_endTime - DateTime.Now).ToString("hh\\:mm"));
             }
             OnPropertyChanged("State");
         }
 
-        private void RoomOnSensorTriggered(object sender, SensorTriggeredArgs args)
+       /* private void RoomOnSensorTriggered(object sender, SensorTriggeredArgs args)
         {
             var sensor = (Sensor) sender;
             _clientCallback.SensorTriggered(sensor.Id);
-        }
+        }*/
 
         public void StopQuest()
         {
             /*Room.AllowListening = true;
             Room.ResetSensors();*/
-            _inProcess = false;
+            InProcess = false;
+            OnPropertyChanged("InProcess");
             State = "";
             OnPropertyChanged("State");
             StartCommand.Enabled = true;
             StopCommand.Enabled = false;
+
+            foreach (var key in Quest.Keys)
+            {
+                key.Viewed = false;
+            }
             _clientCallback.StopQuest();
         }
 
         public void Completed()
         {
-            _inProcess = false;
+            InProcess = false;
+            OnPropertyChanged("InProcess");
             State = "";
             OnPropertyChanged("State");
             StartCommand.Enabled = true;
             StopCommand.Enabled = false;
+
+            foreach (var key in Quest.Keys)
+            {
+                key.Viewed = false;
+            }
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -102,6 +124,13 @@ namespace QuestServer.Models
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void SetKeyViewed(int keyId)
+        {
+            var key = Quest.Keys.Single(x => x.KeyId == keyId);
+            key.Viewed = true;
+
         }
     }
 
