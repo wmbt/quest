@@ -95,8 +95,8 @@ namespace Common.Phone
             SendMessage(Command.OK);
             Connect((IPEndPoint)_otherSideEndPoint);
         }
-        
-        private void SendMessage(Command cmd)
+
+        private void SendMessage(Command cmd, EndPoint ep = null)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Common.Phone
                 byte[] message = msgToSend.ToByte();
 
                 //Send the message asynchronously.
-                _clientSocket.SendTo(message, 0, message.Length, SocketFlags.None, _otherSideEndPoint);
+                _clientSocket.SendTo(message, 0, message.Length, SocketFlags.None, ep == null ? _otherSideEndPoint : ep);
             }
             catch (Exception ex)
             {
@@ -138,9 +138,10 @@ namespace Common.Phone
         {
             if (_stopListening)
                 return;
+            EndPoint clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            //_otherSideEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            _clientSocket.EndReceiveFrom(ar, ref clientEndPoint);
             
-            _otherSideEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            _clientSocket.EndReceiveFrom(ar, ref _otherSideEndPoint);
 
             var msgRecived = new Data(_byteData);
 
@@ -153,13 +154,14 @@ namespace Common.Phone
                         if (_connected == false && _busy == false)
                         {
                             _busy = true;
+                            _otherSideEndPoint = clientEndPoint;
                             _mp3FileReader.CurrentTime = TimeSpan.Zero;
                             _ringer.Play();
                             OnOnCallRecieved(new CallRecivedEventHandlerArgs(msgRecived.strName));
                         }
                         else
                         {
-                            SendMessage(Command.Busy);
+                            SendMessage(Command.Busy, clientEndPoint);
                         }
                         break;
                     }
@@ -168,6 +170,7 @@ namespace Common.Phone
                 case Command.OK:
                     {
                         //Start a call.
+                        _otherSideEndPoint = clientEndPoint;
                         _ringer.Stop();
                         OnOnCallBegin(new CallBeginEventHandlerArgs());
                         Connect((IPEndPoint)_otherSideEndPoint);
@@ -186,6 +189,7 @@ namespace Common.Phone
                 case Command.Bye:
                     {
                         _ringer.Stop();
+                        _otherSideEndPoint = clientEndPoint;
                         Disconnect((IPEndPoint)_otherSideEndPoint);
                         OnOnCallDropped(new CallDroppedEventHandlerArgs(true, false));
                         _busy = false;

@@ -1,11 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.Configuration;
-using System.Globalization;
+﻿using System.Configuration;
 using System.Windows;
 using Common.Phone;
-using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 
 namespace QuestClient
 {
@@ -16,15 +11,15 @@ namespace QuestClient
     {
         private readonly App _app;
         private readonly PhoneEngine _phone;
-        private readonly VolumeSampleProvider _backgroundVolume;
+        //private readonly VolumeSampleProvider _backgroundVolume;
 
-        public PhoneWindow(VolumeSampleProvider volumeSampleProvider)
+        public PhoneWindow(/*VolumeSampleProvider volumeSampleProvider*/)
         {
-            _backgroundVolume = volumeSampleProvider;
+            //_backgroundVolume = volumeSampleProvider;
             var serverIp = ConfigurationManager.AppSettings["ServerIP"];
             var sendPort = int.Parse(ConfigurationManager.AppSettings["SendToCommandPort"]);
             var listenPort = int.Parse(ConfigurationManager.AppSettings["ListenCommandPort"]);
-            Closing += OnClosing;
+            //Closing += OnClosing;
             InitializeComponent();
             _app = (App)Application.Current;
             _phone = new PhoneEngine(_app.QuestId, false, sendPort, listenPort);
@@ -34,16 +29,16 @@ namespace QuestClient
             Closing += (sender, args) => _phone.Dispose();
             _phone.BeginCall(serverIp);
             
-            if (_backgroundVolume != null)
-                _backgroundVolume.Volume = 0;
+            /*if (_backgroundVolume != null)
+                _backgroundVolume.Volume = 0;*/
 
         }
 
-        private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
+        /*private void OnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
             if (_backgroundVolume != null)
                 _backgroundVolume.Volume = float.Parse(ConfigurationManager.AppSettings["BackgroundMuiscVolume"], CultureInfo.InvariantCulture);
-        }
+        }*/
 
         private void PhoneOnOnCallBegin(object sender, CallBeginEventHandlerArgs args)
         {

@@ -6,13 +6,13 @@
         Title="Квест" 
         WindowStyle="ThreeDBorderWindow" 
         WindowState="Maximized"
-        ResizeMode="NoResize" Topmost="True" Margin="0" Height="750" MinHeight="750" Background="White" Width="1200" MinWidth="1200">
+        ResizeMode="NoResize" Topmost="False" Margin="0" Height="750" MinHeight="750" Background="White" Width="1200" MinWidth="1200">
     <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="0,80,0,0" HorizontalAlignment="Center">
-            <Button IsEnabled="False" x:Name="KeyButton" Padding="35" Content="{StaticResource LockImage}"
+            <Button IsEnabled="False" x:Name="KeyButton" Padding="25" Content="{StaticResource HintImage }"
                     HorizontalAlignment="Right" Margin="0,0,50,0" VerticalAlignment="Top" 
 				    Width="300" Height="300" Click="KeyButtonOnClick" BorderThickness="1"/>
-            <Button IsEnabled="False" x:Name="CallButton" Padding="35" Content="{StaticResource PhoneImage}"
+            <Button IsEnabled="False" x:Name="CallButton" Padding="50" Content="{StaticResource PhoneImage}"
                     HorizontalAlignment="Right" Margin="50,0,0,0" VerticalAlignment="Top" 
 				    Width="300" Height="300" Click="CallButtonOnClick" BorderThickness="1"/>
         </StackPanel>

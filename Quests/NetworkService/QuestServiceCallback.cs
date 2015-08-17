@@ -23,7 +23,7 @@ namespace QuestClient.NetworkService
         public int StartQuest(Key[] keys)
         {
             Stages.AssignKeys(keys);
-            _app.Dispatcher.Invoke(() =>
+            _app.Dispatcher.InvokeAsync(() =>
             {
                 Stages.StartWatch();
             });
@@ -39,7 +39,7 @@ namespace QuestClient.NetworkService
 
         public void StopQuest()
         {
-            _app.Dispatcher.Invoke(() =>
+            _app.Dispatcher.InvokeAsync(() =>
             {
                 Stages.StopWatch();    
             });

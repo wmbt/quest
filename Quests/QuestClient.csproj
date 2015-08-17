@@ -111,6 +111,7 @@
     <Compile Include="PhoneWindow.xaml.cs">
       <DependentUpon>PhoneWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Player.cs" />
     <Compile Include="Service References\NetworkService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -233,13 +234,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Media\background.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Media\lock-button.png" />
     <Resource Include="Media\phone-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\hint.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,5 +11,6 @@
         <Image x:Key="PhoneImage2" Source="pack://application:,,,/Media/phone2.png"/>-->
         <Image x:Key="PhoneImage" Source="pack://application:,,,/Media/phone-button.png"/>
         <Image x:Key="LockImage" Source="pack://application:,,,/Media/lock-button.png"/>
+        <Image x:Key="HintImage" Source="pack://application:,,,/Media/hint.png"/>
     </Application.Resources>
 </Application>
