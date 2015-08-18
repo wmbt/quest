@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.ServiceModel;
+using System.Threading;
 using System.Windows;
 using QuestClient.NetworkService;
 
@@ -20,7 +21,13 @@ namespace QuestClient
         public int KeysCount { get; set; }
         
         public App()
+
         {
+            int MaxThreadsCount = Environment.ProcessorCount * 4;
+            // Установим максимальное количество рабочих потоков
+            ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
+            // Установим минимальное количество рабочих потоков
+            ThreadPool.SetMinThreads(2, 2);
             Startup += OnStartup;
             Exit += OnExit;
             
@@ -73,10 +80,14 @@ namespace QuestClient
         {
             try
             {
-                return QuestServiceClient.Ping(QuestId);
+                EventLog.WriteEntry("QuestClient", "Пинг отправлен", EventLogEntryType.Warning);
+                var ping =  QuestServiceClient.Ping(QuestId);
+                EventLog.WriteEntry("QuestClient", "Пинг получен", EventLogEntryType.Warning);
+                return ping;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                EventLog.WriteEntry("QuestClient", ex.Message + Environment.NewLine + ex.StackTrace, EventLogEntryType.Error);
                 QuestServiceClient.Abort();
                 return false;
             }

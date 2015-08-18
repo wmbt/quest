@@ -1,5 +1,7 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading;
 using System.Windows;
 using QuestServer.Models;
 using QuestServer.Storage;
@@ -18,6 +20,11 @@ namespace QuestServer
         
         public App()
         {
+            int MaxThreadsCount = Environment.ProcessorCount * 4;
+            // Установим максимальное количество рабочих потоков
+            ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
+            // Установим минимальное количество рабочих потоков
+            ThreadPool.SetMinThreads(2, 2);
             Startup += OnStartup;
             Exit += OnExit;
         }
@@ -35,8 +42,8 @@ namespace QuestServer
         {
             Clients = new ClientCollection();
             Provider = new Provider();
-            var service = new NetworkService.QuestService(Clients);
-            ServiceHost = new ServiceHost(service);
+            //var service = new NetworkService.QuestService(/*Clients*/);
+            ServiceHost = new ServiceHost(typeof(NetworkService.QuestService));
             ServiceHost.Open();
         }
 
