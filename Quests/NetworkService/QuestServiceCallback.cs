@@ -7,7 +7,7 @@ using Common;
 
 namespace QuestClient.NetworkService
 {
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple/*, UseSynchronizationContext = false*/)]
     class QuestServiceCallback : IQuestServiceCallback
     {
         private readonly App _app;
@@ -34,6 +34,7 @@ namespace QuestClient.NetworkService
                     Stages.StartWatch();
                 });
                 var questDuration = int.Parse(ConfigurationManager.AppSettings["QuestDurationMin"]);
+                _app.ServerPing = DateTime.Now;
                 return questDuration;
 
             }
@@ -51,6 +52,7 @@ namespace QuestClient.NetworkService
 
         public void StopQuest()
         {
+            _app.ServerPing = DateTime.Now;
             _app.Dispatcher.InvokeAsync(() =>
             {
                 Stages.StopWatch();    
@@ -60,6 +62,11 @@ namespace QuestClient.NetworkService
         public QuestState GetQuestState()
         {
             throw new NotImplementedException();
+        }
+
+        public void ServerPing()
+        {
+            _app.ServerPing = DateTime.Now;
         }
     }
 }

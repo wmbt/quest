@@ -82,4 +82,9 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="ServerPing">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

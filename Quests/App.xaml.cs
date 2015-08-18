@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using QuestClient.NetworkService;
 
@@ -19,6 +20,8 @@ namespace QuestClient
         public int QuestId { get; private set; }
         public bool Connected { get; private set; }
         public int KeysCount { get; set; }
+        public System.Timers.Timer HeartBeatTimer;
+        public DateTime ServerPing = DateTime.Now;
         
         public App()
 
@@ -30,8 +33,17 @@ namespace QuestClient
             ThreadPool.SetMinThreads(2, 2);
             Startup += OnStartup;
             Exit += OnExit;
+
+            HeartBeatTimer = new System.Timers.Timer {Interval = 5000};
+            //HeartBeatTimer.Elapsed += HeartBeatTimerOnElapsed;
             
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+        }
+
+        private void HeartBeatTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
+        {
+            HeartBeatTimer.Stop();
+           
         }
 
         private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -58,6 +70,10 @@ namespace QuestClient
             try
             {
                 var instanceContext = new InstanceContext(_callback);
+
+                if (QuestServiceClient != null)
+                    QuestServiceClient.Abort();
+
                 QuestServiceClient = new QuestServiceClient(instanceContext);                
                 QuestServiceClient.Open();
                 var keysCount = QuestServiceClient.RegisterQuestClient(QuestId);
@@ -67,7 +83,8 @@ namespace QuestClient
             catch (Exception ex)
             {
 
-                QuestServiceClient.Abort();
+                if (QuestServiceClient != null)
+                    QuestServiceClient.Abort();
                 Connected = false;
                 var msg = ex.Message + "\r\n" + ex.StackTrace;
                 EventLog.WriteEntry("QuestClient", msg);
@@ -76,7 +93,7 @@ namespace QuestClient
             
         }
 
-        public bool PingServer()
+        /*public bool PingServer()
         {
             try
             {
@@ -91,6 +108,6 @@ namespace QuestClient
                 QuestServiceClient.Abort();
                 return false;
             }
-        }
+        }*/
     }
 }

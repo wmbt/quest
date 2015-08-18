@@ -132,6 +132,11 @@ namespace QuestServer.Models
             key.Viewed = true;
 
         }
+
+        public void SendServerPing()
+        {
+            _clientCallback.ServerPing();
+        }
     }
 
    /* public class Clients : ObservableCollection<Client>

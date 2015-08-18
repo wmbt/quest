@@ -15,7 +15,7 @@ namespace QuestClient
         private readonly Player _player = new Player();
         private readonly DispatcherTimer _dispatcherTimer;
         private Stages Stages { get; set; }
-        private readonly Timer _networkWatcher;
+        //private readonly Timer _networkWatcher;
         private readonly App _app;
         
         public MainWindow()
@@ -23,12 +23,14 @@ namespace QuestClient
             InitializeComponent();
             TotalElapsed.Visibility = Visibility.Hidden;
             Closing += OnClosing;
-            var hbInterval = int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]);
+            //var hbInterval = int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]);
             _app = (App) Application.Current;
             _dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(0, 0, 1) };
             _dispatcherTimer.Tick += DispatcherTimerOnTick;
-            _networkWatcher = new Timer { Interval = 1000 * hbInterval };
-            _networkWatcher.Elapsed += NetworkWatcherOnElapsed;
+            //_networkWatcher = new Timer { Interval = 1000 * hbInterval };
+            //_networkWatcher.Elapsed += NetworkWatcherOnElapsed;
+            
+            _app.HeartBeatTimer.Elapsed += NetworkWatcherOnElapsed;
         
 
             Stages = _app.QusetStages;
@@ -36,7 +38,7 @@ namespace QuestClient
             Stages.QuestStopped += StagesOnQuestStopped;
             Stages.QuestCompleted += StagesOnQuestCompleted;
 
-            _networkWatcher.Start();
+            _app.HeartBeatTimer.Start();
 
             if (!_app.Connected)
                 return;
@@ -77,11 +79,14 @@ namespace QuestClient
 
         private void NetworkWatcherOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            _networkWatcher.Stop();
-            var app = (App)Application.Current;
-            if (!app.PingServer())
+            _app.HeartBeatTimer.Stop();
+
+            var maxInterval = new TimeSpan(0, 0, 0, int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]));
+            var interval = DateTime.Now - _app.ServerPing;
+            
+            if (interval > maxInterval)
             {
-                var keysCount = app.ConnectToServer();
+                var keysCount = _app.ConnectToServer();
                 if (keysCount > 0)
                 {
                     PrepareWindow();
@@ -93,7 +98,7 @@ namespace QuestClient
                         Stages.StopWatch();
                     }
                     _dispatcherTimer.Stop();
-                    app.Dispatcher.Invoke(() =>
+                    _app.Dispatcher.Invoke(() =>
                     {
                         TotalElapsed.Visibility = Visibility.Hidden;
                         CallButton.IsEnabled = false;
@@ -101,7 +106,14 @@ namespace QuestClient
                     });
                 }
             }
-            _networkWatcher.Start();
+            
+            
+            //var app = (App)Application.Current;
+            /*if (!app.PingServer())
+            {
+                
+            }*/
+            _app.HeartBeatTimer.Start();
         }
 
         private void DispatcherTimerOnTick(object sender, EventArgs eventArgs)

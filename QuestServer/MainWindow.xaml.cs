@@ -33,18 +33,19 @@ namespace QuestServer
         private readonly MainViewModel _model;
         private readonly App _app;
         private readonly Timer _networkTimer;
-        private readonly int _hbInterval;
+        //private readonly int _hbInterval;
 
         public MainWindow()
         {
             var sendPort = int.Parse(ConfigurationManager.AppSettings["SendToCommandPort"]);
             var listenPort = int.Parse(ConfigurationManager.AppSettings["ListenCommandPort"]);
-            _hbInterval = int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]);
+            var hbInterval = int.Parse(ConfigurationManager.AppSettings["HeartBeatSec"]);
+            
             _app = App.GetApp();
             _model = new MainViewModel(_app.Clients);
             _phone = new PhoneEngine(-1, false, sendPort, listenPort);
             _phone.OnCallRecieved += PhoneOnOnCallRecieved;
-            _networkTimer = new Timer(5000);
+            _networkTimer = new Timer(hbInterval * 1000);
             _networkTimer.Elapsed += NetworkTimerOnElapsed;
             DataContext = _model;
             Closing += (sender, args) =>
@@ -59,18 +60,19 @@ namespace QuestServer
         private void NetworkTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             _networkTimer.Stop();
-            var now = DateTime.Now;
+            //var now = DateTime.Now;
 
             var clients = _model.Clients.ToArray();
 
             foreach (var c in clients)
             {
-                var elapsed = (now - c.Quest.LastPing).TotalSeconds;
+                /*var elapsed = (now - c.Quest.LastPing).TotalSeconds;
                 if (elapsed > _hbInterval)
                 {
                     c.Cannel.Abort();
                 }
-                c.RefreshState();
+                c.RefreshState();*/
+                c.SendServerPing();
             }
             _networkTimer.Start();
         }

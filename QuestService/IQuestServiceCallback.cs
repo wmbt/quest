@@ -19,5 +19,8 @@ namespace QuestService
 
         [OperationContract]
         QuestState GetQuestState();
+
+        [OperationContract(IsOneWay = true)]
+        void ServerPing();
     }
 }

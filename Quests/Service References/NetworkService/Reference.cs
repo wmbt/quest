@@ -54,6 +54,9 @@ namespace QuestClient.NetworkService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IQuestService/GetQuestState", ReplyAction="http://tempuri.org/IQuestService/GetQuestStateResponse")]
         Common.QuestState GetQuestState();
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/ServerPing")]
+        void ServerPing();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
