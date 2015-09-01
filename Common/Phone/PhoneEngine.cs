@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -76,9 +77,16 @@ namespace Common.Phone
                 WaveFormat = _codec.RecordFormat
             };
             //_waveIn.DataAvailable += RecorderOnDataAvailable;
+            _waveIn.RecordingStopped += (sender, args) =>
+            {
+                //Debug.WriteLine("Recording stopped");
+                Thread.Sleep(10);
+            };
+            
 
-            _player = new WaveOut() { DesiredLatency = 100};
+            _player = new WaveOut() { DesiredLatency = 200};
             _waveProvider = new BufferedWaveProvider(_codec.RecordFormat);
+            _waveProvider.DiscardOnBufferOverflow = false;
             _player.Init(_waveProvider);
         }
 
@@ -220,8 +228,11 @@ namespace Common.Phone
 
             _udpSender.Connect(clientEndPoint.Address, VoicePort);
 
+            _waveProvider.ClearBuffer();
             _player.Play();
             _waveIn.DataAvailable += RecorderOnDataAvailable;
+            //Debug.WriteLine("Wave in subscribed");
+            
             _waveIn.StartRecording();
 
             _connected = true;
@@ -237,16 +248,23 @@ namespace Common.Phone
             {
                 while (_connected)
                 {
+                    if (_udpListener.Available == 0)
+                        continue;
+                    
                     byte[] b = _udpListener.Receive(ref endPoint);
                     byte[] decoded = listenerThreadState.Codec.Decode(b, 0, b.Length);
                     if (_player.PlaybackState == PlaybackState.Playing)
                     {
+                        
+                        //_waveProvider.ClearBuffer();
                         _waveProvider.AddSamples(decoded, 0, decoded.Length);
+                        
                     }
                 }
             }
             catch (SocketException ex)
             {
+                //Debug.WriteLine(ex.Message);
                 // usually not a problem - just means we have disconnected
             }
         }
@@ -267,7 +285,7 @@ namespace Common.Phone
             
             
             _waveIn.DataAvailable -= RecorderOnDataAvailable;
-            
+            //Debug.WriteLine("Wave in unsubscribed");
 
             _udpSender.Close();
             _udpListener.Close();
@@ -277,8 +295,11 @@ namespace Common.Phone
         private void RecorderOnDataAvailable(object sender, WaveInEventArgs e)
         {
 
+            //Debug.WriteLine("Readed " + e.BytesRecorded + " bytes");
+
             byte[] encoded = _codec.Encode(e.Buffer, 0, e.BytesRecorded);
             _udpSender.Send(encoded, encoded.Length);
+            //_udpSender.SendAsync(e.Buffer, e.BytesRecorded);
         }
 
         public void DropCall()

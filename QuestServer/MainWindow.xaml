@@ -4,12 +4,12 @@
         xmlns:networkService="clr-namespace:QuestServer.NetworkService"
         xmlns:questServer="clr-namespace:QuestServer"
         x:Class="QuestServer.MainWindow"
-        Title="Сервер квестов" Height="560" Width="1200" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" HorizontalAlignment="Center" VerticalAlignment="Center">
+        Title="Сервер квестов" Height="700" Width="1050" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" HorizontalAlignment="Center" VerticalAlignment="Center">
     <StackPanel Margin="0,0,0,10">
         <Label Content="Список клиентов:" Margin="10,10,10,0" Height="24"/>
         <ListBox Margin="10,0"
                  DataContext="{Binding}" ItemsSource="{ Binding Clients }" x:Name="ClientsList" AllowDrop="False" 
-                 HorizontalContentAlignment="Stretch" VerticalAlignment="Top" Height="440">
+                 HorizontalContentAlignment="Stretch" VerticalAlignment="Top" Height="580">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Focusable" Value="False"/>

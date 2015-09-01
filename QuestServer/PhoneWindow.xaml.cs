@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Threading;
 using System.Windows;
 using Common.Phone;
 
@@ -39,7 +40,10 @@ namespace QuestServer
 
         private void AcceptButtonOnClick(object sender, RoutedEventArgs e)
         {
-            _phone.AcceptCall();
+            ThreadPool.QueueUserWorkItem(state =>
+            {
+                _phone.AcceptCall();
+            });
             AcceptButton.IsEnabled = false;
             DropButton.Content = "Завершить";
         }

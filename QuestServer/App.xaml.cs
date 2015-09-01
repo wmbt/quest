@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Threading;
@@ -20,13 +21,28 @@ namespace QuestServer
         
         public App()
         {
-            int MaxThreadsCount = Environment.ProcessorCount * 4;
+            //int minThreads = Environment.ProcessorCount * 8;
             // Установим максимальное количество рабочих потоков
-            ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
+
+            //int a;
+            //int b;
+            //ThreadPool.GetMaxThreads(out a, out b);
+            //ThreadPool.GetMinThreads(out a, out b);
+            //ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
+            
+            
             // Установим минимальное количество рабочих потоков
-            ThreadPool.SetMinThreads(2, 2);
+            ThreadPool.SetMinThreads(8, 8);
             Startup += OnStartup;
             Exit += OnExit;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+        }
+
+        private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var exception = (Exception) e.ExceptionObject;
+            var msg = exception.Message + "\r\n" + exception.StackTrace;
+            EventLog.WriteEntry("QuestServer", msg);
         }
 
         private void OnExit(object sender, ExitEventArgs exitEventArgs)

@@ -26,11 +26,11 @@ namespace QuestClient
         public App()
 
         {
-            int MaxThreadsCount = Environment.ProcessorCount * 4;
+            //int MaxThreadsCount = Environment.ProcessorCount * 4;
             // Установим максимальное количество рабочих потоков
-            ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
+            //ThreadPool.SetMaxThreads(MaxThreadsCount, MaxThreadsCount);
             // Установим минимальное количество рабочих потоков
-            ThreadPool.SetMinThreads(2, 2);
+            ThreadPool.SetMinThreads(4, 4);
             Startup += OnStartup;
             Exit += OnExit;
 
@@ -40,11 +40,11 @@ namespace QuestClient
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
         }
 
-        private void HeartBeatTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
+       /* private void HeartBeatTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
             HeartBeatTimer.Stop();
            
-        }
+        }*/
 
         private void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
@@ -53,6 +53,7 @@ namespace QuestClient
 
         private void OnExit(object sender, ExitEventArgs exitEventArgs)
         {
+            HeartBeatTimer.Stop();
             QuestServiceClient.Close();
         }
 
@@ -78,6 +79,11 @@ namespace QuestClient
                 QuestServiceClient.Open();
                 var keysCount = QuestServiceClient.RegisterQuestClient(QuestId);
                 Connected = keysCount > 0;
+                
+                if (Connected)
+                    ServerPing = DateTime.Now;
+                ;
+
                 return keysCount;
             }
             catch (Exception ex)

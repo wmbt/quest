@@ -31,15 +31,16 @@ namespace QuestClient
             //_networkWatcher.Elapsed += NetworkWatcherOnElapsed;
             
             _app.HeartBeatTimer.Elapsed += NetworkWatcherOnElapsed;
-        
-
+            
             Stages = _app.QusetStages;
             Stages.QuestStarted += StagesOnQuestStarted;
             Stages.QuestStopped += StagesOnQuestStopped;
             Stages.QuestCompleted += StagesOnQuestCompleted;
 
-            _app.HeartBeatTimer.Start();
+            
 
+
+            _app.HeartBeatTimer.Start();
             if (!_app.Connected)
                 return;
             PrepareWindow();

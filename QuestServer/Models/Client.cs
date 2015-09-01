@@ -55,6 +55,7 @@ namespace QuestServer.Models
             
             InProcess = true;
             OnPropertyChanged("InProcess");
+            RefreshState();
 
 
             /*Room.AllowListening = true;
@@ -133,10 +134,24 @@ namespace QuestServer.Models
 
         }
 
-        public void SendServerPing()
+        public bool SendServerPing()
         {
-            _clientCallback.ServerPing();
+            try
+            {
+                _clientCallback.ServerPing();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Cannel.Abort();
+                return false;
+            }
         }
+
+        //public void CloseClient()
+        //{
+        //    _clientCallback
+        //}
     }
 
    /* public class Clients : ObservableCollection<Client>

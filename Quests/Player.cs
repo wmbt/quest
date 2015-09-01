@@ -50,7 +50,7 @@ namespace QuestClient
         {
             _player = new WaveOut();
             _mp3File = new MediaFoundationReader(_mp3Files[trackIndex]);
-            _volumeProvider = new VolumeSampleProvider(_mp3File.ToSampleProvider()) { Volume = BackgroundVolume };
+            _volumeProvider = new VolumeSampleProvider(_mp3File.ToSampleProvider()) { Volume = _mute ? 0 : BackgroundVolume };
             _player.DesiredLatency = 1000;
             _player.Init(_volumeProvider);
             _mp3File.CurrentTime = TimeSpan.Zero;

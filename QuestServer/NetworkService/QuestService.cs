@@ -15,6 +15,8 @@ namespace QuestServer.NetworkService
     {
         private readonly App _app;
         private readonly Provider _provider;
+        private object _syncObject = new object();
+
         public ClientCollection Clients { get; private set; }
         
         public QuestService(/*ClientCollection clients*/)
@@ -65,11 +67,15 @@ namespace QuestServer.NetworkService
 
         private void UnregisterClient(IContextChannel channel)
         {
-            _app.Dispatcher.Invoke(() =>
+            lock (_syncObject)
             {
-                var c = Clients.Single(x => x.SessionId == channel.SessionId);
-                Clients.Remove(c);
-            });
+                _app.Dispatcher.Invoke(() =>
+                {
+                    var c = Clients.SingleOrDefault(x => x.SessionId == channel.SessionId);
+                    if (c != null)
+                        Clients.Remove(c);
+                });
+            }
         }
 
         private void ChannelOnFaulted(object sender, EventArgs eventArgs)

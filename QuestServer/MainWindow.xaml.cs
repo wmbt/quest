@@ -72,7 +72,12 @@ namespace QuestServer
                     c.Cannel.Abort();
                 }
                 c.RefreshState();*/
-                c.SendServerPing();
+                if (c.SendServerPing())
+                    c.RefreshState();
+                /*else
+                {
+                    
+                }*/
             }
             _networkTimer.Start();
         }
