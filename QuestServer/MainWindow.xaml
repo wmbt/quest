@@ -28,6 +28,9 @@
                                 <Button Width="80" Margin="5" Command="{Binding StopCommand}">
                                     Остановить
                                 </Button>
+                                <Button Width="80" Margin="5" Command="{Binding SendMessageCommand}">
+                                    Сообщение
+                                </Button>
                             </StackPanel>
                             <questServer:Thumbnails Client="{Binding}">
                                 

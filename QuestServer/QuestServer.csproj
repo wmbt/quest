@@ -114,6 +114,9 @@
       <DependentUpon>QuestEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\QuestEditorViewModel.cs" />
+    <Compile Include="SendMessage.xaml.cs">
+      <DependentUpon>SendMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage\Provider.cs" />
     <Compile Include="Storage\QuestDbDataSet.cs">
       <DependentUpon>QuestDbDataSet.xsd</DependentUpon>
@@ -152,6 +155,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="QuestEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SendMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,7 +207,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

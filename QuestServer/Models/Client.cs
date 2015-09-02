@@ -4,8 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
 using System.Windows;
-using System.Windows.Input;
-using Common;
 using QuestServer.Annotations;
 using QuestService;
 
@@ -17,6 +15,7 @@ namespace QuestServer.Models
         public Quest Quest { get; private set; }
         public Command StartCommand { get; set; }
         public Command StopCommand { get; set; }
+        public Command SendMessageCommand { get; set; }
         public string State { get; set; }
         //private DateTime _startTime { get; set; }
         private DateTime _endTime { get; set; }
@@ -36,12 +35,39 @@ namespace QuestServer.Models
 
             StartCommand = new Command(StartQuest);
             StopCommand = new Command(StopQuest);
+            SendMessageCommand = new Command(OpenMessageWindow);
             StartCommand.Enabled = true;
+        }
+
+        private void OpenMessageWindow()
+        {
+            var messageWindow = new SendMessage(this)
+            {
+                Owner = Application.Current.MainWindow
+            };
+            messageWindow.ShowDialog();
+        }
+
+        public void SendMessage(string message)
+        {
+            try
+            {
+                _clientCallback.SendMessage(message);
+            }
+            catch (Exception ex)
+            {
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    MessageBox.Show("Не удалось отправить сообщение", "Ошибка",
+                       MessageBoxButton.OK, MessageBoxImage.Error);    
+                });
+            }
         }
 
         public void StartQuest()
         {
             StartCommand.Enabled = false;
+            SendMessageCommand.Enabled = true;
             StopCommand.Enabled = true;
             var app = (App) Application.Current;
             var q = app.Provider.GetQuest(Quest.Id);
@@ -94,6 +120,7 @@ namespace QuestServer.Models
             OnPropertyChanged("State");
             StartCommand.Enabled = true;
             StopCommand.Enabled = false;
+            SendMessageCommand.Enabled = false;
 
             foreach (var key in Quest.Keys)
             {

@@ -22,5 +22,8 @@ namespace QuestService
 
         [OperationContract(IsOneWay = true)]
         void ServerPing();
+
+        [OperationContract(IsOneWay = true)]
+        void SendMessage(string msg);
     }
 }

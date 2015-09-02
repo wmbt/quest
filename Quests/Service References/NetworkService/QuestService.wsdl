@@ -59,6 +59,9 @@
   <wsdl:message name="IQuestService_ServerPing_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:ServerPing" />
   </wsdl:message>
+  <wsdl:message name="IQuestService_SendMessage_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:SendMessage" />
+  </wsdl:message>
   <wsdl:portType msc:usingSession="true" name="IQuestService">
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="RegisterQuestClient">
       <wsdl:input wsaw:Action="http://tempuri.org/IQuestService/RegisterQuestClient" message="tns:IQuestService_RegisterQuestClient_InputMessage" />
@@ -90,6 +93,9 @@
     </wsdl:operation>
     <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="ServerPing">
       <wsdl:output wsaw:Action="http://tempuri.org/IQuestService/ServerPing" message="tns:IQuestService_ServerPing_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation msc:isInitiating="true" msc:isTerminating="false" name="SendMessage">
+      <wsdl:output wsaw:Action="http://tempuri.org/IQuestService/SendMessage" message="tns:IQuestService_SendMessage_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSDualHttpBinding_IQuestService" type="tns:IQuestService">
@@ -157,6 +163,12 @@
     </wsdl:operation>
     <wsdl:operation name="ServerPing">
       <soap12:operation soapAction="http://tempuri.org/IQuestService/ServerPing" style="document" />
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <soap12:operation soapAction="http://tempuri.org/IQuestService/SendMessage" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

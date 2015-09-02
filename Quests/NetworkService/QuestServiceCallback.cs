@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
+using System.Windows;
 using Common;
 
 namespace QuestClient.NetworkService
@@ -67,6 +68,32 @@ namespace QuestClient.NetworkService
         public void ServerPing()
         {
             _app.ServerPing = DateTime.Now;
+        }
+
+
+        public void SendMessage(string msg)
+        {
+            var messageWindow = Application.Current.Windows.OfType<MessageWindow>().SingleOrDefault();
+            if (messageWindow != null)
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    messageWindow.Message = msg;
+                });
+            }
+            else
+            {
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                {
+                    messageWindow = new MessageWindow(msg)
+                    {
+                        Owner = Application.Current.MainWindow
+                    };
+
+                    messageWindow.ShowDialog();
+                });
+            }
+
         }
     }
 }

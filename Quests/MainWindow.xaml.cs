@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Configuration;
+using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
@@ -104,6 +105,8 @@ namespace QuestClient
                         TotalElapsed.Visibility = Visibility.Hidden;
                         CallButton.IsEnabled = false;
                         KeyButton.IsEnabled = false;
+                        foreach (var window in _app.Windows.OfType<Window>().Where(window => !Equals(window, _app.MainWindow)))
+                            window.Close();
                     });
                 }
             }
@@ -166,16 +169,17 @@ namespace QuestClient
 
         private void KeyButtonOnClick(object sender, RoutedEventArgs e)
         {
-            Dispatcher.Invoke(() =>
+           // Dispatcher.Invoke(() =>
+           // {
+            var keyViewer = new KeyWindow(Stages.CurrentStage.Key) { Owner = this };
+            _app.QuestServiceClient.KeyViewedAsync(Stages.CurrentStage.Key.QuestId, Stages.CurrentStage.Key.KeyId);   
+            keyViewer.ShowDialog();
+            //});
+            //
+            /*Dispatcher.InvokeAsync(() =>
             {
-                var keyViewer = new KeyWindow(Stages.CurrentStage.Key) { Owner = this };
-                keyViewer.ShowDialog();
-            });
-
-            Dispatcher.InvokeAsync(() =>
-            {
-               _app.QuestServiceClient.KeyViewed(Stages.CurrentStage.Key.QuestId, Stages.CurrentStage.Key.KeyId);
-            });
+               
+            });*/
         }
     }
 }

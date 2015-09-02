@@ -57,6 +57,9 @@ namespace QuestClient.NetworkService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/ServerPing")]
         void ServerPing();
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IQuestService/SendMessage")]
+        void SendMessage(string msg);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
